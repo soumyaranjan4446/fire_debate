@@ -4,7 +4,7 @@ from fire_debate.schemas.evidence import EvidenceDoc
 class Librarian:
     def __init__(self):
         # Heuristic rules for authority (Simple version)
-        self.trusted_domains = [".gov", ".edu", ".org", "reuters", "apnews"]
+        self.trusted_domains = [".gov", ".edu", ".org", ".com", "reuters", "apnews"]
 
     def filter_and_score(self, docs: List[EvidenceDoc]) -> List[EvidenceDoc]:
         """Adjusts reliability scores based on domain authority."""

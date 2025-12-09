@@ -14,7 +14,7 @@ class HGTJudge(torch.nn.Module):
 
         self.convs = torch.nn.ModuleList()
         for _ in range(num_layers):
-            conv = HGTConv(hidden_channels, hidden_channels, metadata, num_heads, group='sum')
+            conv = HGTConv(hidden_channels, hidden_channels, metadata, num_heads)
             self.convs.append(conv)
 
         self.classifier = nn.Sequential(

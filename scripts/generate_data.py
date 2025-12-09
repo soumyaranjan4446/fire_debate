@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import yaml
 import json
 import torch
@@ -12,58 +16,67 @@ from fire_debate.rag.retriever import EvidenceRetriever
 from fire_debate.debate.manager import DebateManager
 
 def main():
+    print("🚀 Initializing Mass Generation (Dataset: Climate-FEVER)...")
+    
     # 1. Setup
     with open("configs/base.yaml", "r") as f:
         cfg = yaml.safe_load(f)
     
-    # Check for GPU
-    if torch.cuda.is_available():
-        print(f"🚀 Running on GPU: {torch.cuda.get_device_name(0)}")
+    # Use CPU to avoid memory crashes during long runs
+    # cfg['system']['device'] = 'cpu'
     
-    # Initialize Core Systems
     llm = LocalHFClient(cfg)
     retriever = EvidenceRetriever(cfg)
     librarian = Librarian()
     
-    # Agents
     alice = DebaterAgent(AgentConfig("Alice", "PRO"), llm, retriever, librarian)
     bob = DebaterAgent(AgentConfig("Bob", "CON"), llm, retriever, librarian)
     manager = DebateManager(alice, bob, retriever)
 
-    # 2. Load Real World Data (LIAR Dataset)
-    print("📥 Loading LIAR dataset...")
-    dataset = load_dataset("liar", split="train")
+    # 2. Load Climate-FEVER (Parquet-native, no script errors)
+    print("📥 Loading Climate-FEVER dataset...")
+    try:
+        # This dataset is safe and loads without trust_remote_code
+        dataset = load_dataset("tdiggelm/climate_fever", split="test")
+    except Exception as e:
+        print(f"❌ Error loading dataset: {e}")
+        return
+
+    # 3. SELECT SAMPLES
+    # We want claims that are definitely True or False (0 or 1)
+    # Label 0 = Supports, 1 = Refutes, 2 = Not Enough Info, 3 = Disputed
+    filtered_dataset = dataset.filter(lambda x: x['claim_label'] in [0, 1])
     
-    # Take only first 5 examples for testing (Change to 100+ for real research)
-    subset = dataset.select(range(5)) 
+    # Take 5 for testing (Increase to 20+ for real training)
+    LIMIT = 5
+    subset = filtered_dataset.select(range(LIMIT))
     
     output_dir = Path("data/processed/training_set")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    print("🔥 Starting Batch Generation...")
-    for i, row in tqdm(enumerate(subset), total=len(subset)):
-        claim = row['statement']
-        label = row['label'] # 0=false, 1=half-true, ..., 5=true (Simplified below)
+    print(f"🔥 Starting Generation of {LIMIT} debates...")
+
+    for i, row in tqdm(enumerate(subset), total=LIMIT):
+        claim = row['claim']
+        label_id = row['claim_label']
         
-        # Simplify Label to Binary (True/False) for this experiment
-        # LIAR labels: 0,1,2 usually considered 'false-leaning', 3,4,5 'true-leaning'
-        binary_gt = True if label > 2 else False
-        
+        # Map: 0 (Supports) -> True, 1 (Refutes) -> False
+        is_true = (label_id == 0)
+
         try:
-            # RUN THE DEBATE
+            # Run Debate
             log = manager.run_debate(claim, rounds=2)
+            log.ground_truth = is_true
             
-            # Inject Ground Truth into the log so we can train on it
-            log.ground_truth = binary_gt
-            
-            # Save individually
-            manager.save_log(log, f"{output_dir}/sample_{i}_{log.debate_id}.json")
+            # Save
+            filename = f"sample_{i}_{log.debate_id}.json"
+            manager.save_log(log, str(output_dir / filename))
             
         except Exception as e:
-            print(f"❌ Failed on sample {i}: {e}")
+            print(f"⚠️ Failed on sample {i}: {e}")
             continue
 
-    print("✅ Data Generation Complete.")
+    print(f"✅ Data Generation Complete. Check {output_dir}")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,21 @@
+experiment_name: "fire_debate_v1"
+device: "cuda" # or "cpu"
+
+llm:
+  # Using a small, powerful open model (Mistral or Zephyr)
+  model_id: "HuggingFaceH4/zephyr-7b-beta" 
+  max_new_tokens: 512
+  temperature: 0.7
+  quantization: "4bit" # Critical for running locally
+
+retrieval:
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  max_search_results: 10
+  top_k_evidence: 3
+  db_path: "./data/chroma_db"
+
+debate:
+  rounds: 3
+  agents:
+    pro: "RationalProponent"
+    con: "RationalOpponent"

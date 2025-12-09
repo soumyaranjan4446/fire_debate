@@ -1,3 +1,9 @@
+import sys
+import os
+
+# Add the parent directory (project root) to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import yaml
 import torch
 from fire_debate.agents.local_client import LocalHFClient
@@ -30,7 +36,7 @@ def main():
     manager = DebateManager(alice, bob, retriever)
 
     # 5. Run!
-    topic = "Artificial Intelligence will eventually surpass human intelligence."
+    topic = "Human Intelligence will eventually surpass artificial intelligence."
     log = manager.run_debate(topic, rounds=2)
 
     # 6. Save Artifact

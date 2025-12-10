@@ -36,7 +36,7 @@ def main():
     manager = DebateManager(alice, bob, retriever)
 
     # 5. Run!
-    topic = "Human Intelligence will eventually surpass artificial intelligence."
+    topic = "Artificial Intelligence will eventually surpass human intelligence."    
     log = manager.run_debate(topic, rounds=2)
 
     # 6. Save Artifact

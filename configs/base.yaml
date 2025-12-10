@@ -7,15 +7,15 @@ tavily:
 # ------------------------
 
 llm:
-  model_id: "Qwen/Qwen2.5-1.5B-Instruct" 
+  model_id: "Qwen/Qwen2.5-0.5B-Instruct" 
   max_new_tokens: 512
   temperature: 0.3
-  quantization: "none" 
+  quantization: "4bit" 
 
 retrieval:
   embedding_model: "BAAI/bge-small-en-v1.5" # or "sentence-transformers/all-MiniLM-L6-v2"
-  max_search_results: 5
-  top_k_evidence: 3
+  max_search_results: 3
+  top_k_evidence: 2
   db_path: "./data/chroma_db"
 
 debate:

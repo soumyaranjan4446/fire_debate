@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict
 
 class LLMClient(ABC):
+    """
+    Abstract Interface for the LLM. 
+    This allows you to swap Qwen for Llama or GPT-4 without breaking the Agents.
+    """
     @abstractmethod
     def generate(self, system_prompt: str, user_prompt: str) -> str:
         """
-        Abstract method. Inputs are strings, Output is the generated text.
+        Takes a system instruction (persona) and a user input (task),
+        and returns the model's text response.
         """
         pass

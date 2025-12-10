@@ -5,16 +5,17 @@ scikit-learn
 pandas
 numpy
 
-# --- LLMs & Transformers ---
-# Newer version required for Qwen 2.5
+# --- LLMs & Transformers (The Brain) ---
+# Version 4.37+ is required for Qwen 2.5 support
 transformers>=4.37.0  
 accelerate>=0.26.0
 bitsandbytes>=0.41.0
 sentence-transformers>=2.2.2
 
-# --- Retrieval & Database ---
+# --- Retrieval & Search (The Eyes) ---
 chromadb>=0.4.0
-tavily-python          # <--- The new Research-Grade searcher
+tavily-python          # Real-time Web Search
+rank_bm25              # Keyword Search (BM25)
 
 # --- Data & Utilities ---
 datasets

@@ -1,5 +1,6 @@
 import sys
 import os
+# Fix imports so python can find fire_debate
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import yaml
@@ -16,56 +17,78 @@ from fire_debate.rag.retriever import EvidenceRetriever
 from fire_debate.debate.manager import DebateManager
 
 def main():
-    print("🚀 Initializing Mass Generation (Dataset: Climate-FEVER)...")
+    print("🚀 Initializing Mass Generation (Dataset: ARG-EN Local)...")
     
-    # 1. Setup
-    with open("configs/base.yaml", "r") as f:
+    # 1. Setup Configuration
+    config_path = os.path.join(os.path.dirname(__file__), '../configs/base.yaml')
+    with open(config_path, "r") as f:
         cfg = yaml.safe_load(f)
     
-    # Use CPU to avoid memory crashes during long runs
-    # cfg['system']['device'] = 'cpu'
-    
+    # Initialize Engines
+    print(f"⚙️ Loading AI Brain: {cfg['llm']['model_id']}...")
     llm = LocalHFClient(cfg)
+    
+    print("📚 Connecting to Knowledge Base...")
     retriever = EvidenceRetriever(cfg)
     librarian = Librarian()
     
+    # Initialize Agents
     alice = DebaterAgent(AgentConfig("Alice", "PRO"), llm, retriever, librarian)
     bob = DebaterAgent(AgentConfig("Bob", "CON"), llm, retriever, librarian)
     manager = DebateManager(alice, bob, retriever)
 
-    # 2. Load Climate-FEVER (Parquet-native, no script errors)
-    print("📥 Loading Climate-FEVER dataset...")
+    # 2. Load Local JSON Files
+    # NOTE: Ensure you moved your json files to data/raw/
+    data_files = {
+        "train": "data/raw/train.json",
+        "validation": "data/raw/val.json", 
+        "test": "data/raw/test.json"
+    }
+    
+    # CHANGE THIS to "train" for training data, or "test" for evaluation data
+    SPLIT_NAME = "train" 
+    
+    print(f"📥 Loading local dataset ({SPLIT_NAME} split)...")
+    
     try:
-        # This dataset is safe and loads without trust_remote_code
-        dataset = load_dataset("tdiggelm/climate_fever", split="test")
+        # Load the JSONs using Hugging Face's local loader
+        dataset = load_dataset("json", data_files=data_files, split=SPLIT_NAME)
+    except FileNotFoundError:
+        print("❌ Error: Could not find JSON files in 'data/raw/'. Please move them there.")
+        return
     except Exception as e:
         print(f"❌ Error loading dataset: {e}")
         return
 
-    # 3. SELECT SAMPLES
-    # We want claims that are definitely True or False (0 or 1)
-    # Label 0 = Supports, 1 = Refutes, 2 = Not Enough Info, 3 = Disputed
-    filtered_dataset = dataset.filter(lambda x: x['claim_label'] in [0, 1])
-    
-    # Take 5 for testing (Increase to 20+ for real training)
+    # 3. Select Samples
+    # Set to 20 or 50 for a good training batch. Set to 5 for a quick test.
     LIMIT = 5
-    subset = filtered_dataset.select(range(LIMIT))
+    subset = dataset.select(range(LIMIT))
     
-    output_dir = Path("data/processed/training_set")
+    # Output Directory
+    output_dir = Path(f"data/processed/{SPLIT_NAME}_set")
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"🔥 Starting Generation of {LIMIT} debates...")
 
     for i, row in tqdm(enumerate(subset), total=LIMIT):
-        claim = row['claim']
-        label_id = row['claim_label']
+        # Extract fields based on your JSON structure
+        claim = row.get('content') 
+        if not claim: continue
+
+        label_id = row.get('label')
         
-        # Map: 0 (Supports) -> True, 1 (Refutes) -> False
+        # ARG-EN Label Mapping:
+        # 0 = Real (True)
+        # 1 = Fake (False)
         is_true = (label_id == 0)
 
         try:
+            # Truncate very long news articles to first 300 chars to save context window
+            short_claim = claim[:300] + "..." if len(claim) > 300 else claim
+            
             # Run Debate
-            log = manager.run_debate(claim, rounds=2)
+            log = manager.run_debate(short_claim, rounds=2)
             log.ground_truth = is_true
             
             # Save

@@ -8,29 +8,30 @@ class SynthesisAgent:
 
     def synthesize(self, log: DebateLog) -> str:
         """
-        Condenses the entire debate into a structured report.
+        Condenses the debate into a report + a one-sentence correction.
         """
         transcript = ""
         for turn in log.turns:
-            # Skip Moderator turns in the final summary to keep it clean
-            if turn.stance == "NEUTRAL":
-                continue
+            if turn.stance == "NEUTRAL": continue
             transcript += f"[{turn.agent_id}]: {turn.text}\n"
 
         prompt = f"""
-        You are a Synthesis Agent. Your job is to summarize this debate for a Fact-Checking Judge.
+        You are an Fact-Checking Adjudicator. Read this debate transcript:
         
-        DEBATE TRANSCRIPT:
-        {transcript[:3000]}  # Truncate to avoid context overflow if debate is huge
+        {transcript[:3500]}
         
-        Task:
-        1. Identify the Main Claim.
-        2. List the strongest evidence provided by the Proponent.
-        3. List the strongest counter-evidence provided by the Opponent.
-        4. Note any un-refuted points.
+        TASK:
+        1. Summarize the main arguments for both sides.
+        2. Based *only* on the evidence presented, determine the factual reality.
+        3. Write a single, concise sentence starting with "THE TRUTH:" that states the corrected fact.
+           - If the claim is True, reaffirm it.
+           - If the claim is False, state what is actually true.
         
-        Output a structured summary.
+        FORMAT:
+        Summary: [Your Summary Here]
+        THE TRUTH: [Your One-Sentence Correction Here]
         """
         
-        summary = self.llm.generate("You are an objective summarizer.", prompt)
+        # We assume the "Proponent" LLM is smart enough to summarize (usually Qwen)
+        summary = self.llm.generate("You are an objective judge.", prompt)
         return summary

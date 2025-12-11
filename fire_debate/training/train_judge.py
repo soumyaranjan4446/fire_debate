@@ -1,5 +1,6 @@
 import sys
 import os
+# Fix imports so python can find fire_debate
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 import torch
@@ -12,14 +13,17 @@ from fire_debate.insight.graph_builder import GraphBuilder
 from fire_debate.insight.hgt_judge import HGTJudge
 
 def load_dataset(data_dir):
-    files = glob.glob(f"{data_dir}/*.json")
-    print(f"📂 Found {len(files)} debate logs.")
+    # Search for JSON files
+    search_path = os.path.join(data_dir, "*.json")
+    files = glob.glob(search_path)
+    
+    print(f"📂 Looking in: {os.path.abspath(data_dir)}")
+    print(f"   Found {len(files)} debate logs.")
     
     if len(files) == 0:
         return []
 
     # Use CPU for graph building to save GPU memory for training
-    # (The graphs are small, so CPU is fast enough)
     builder = GraphBuilder(device="cpu") 
     graphs = []
     
@@ -28,11 +32,11 @@ def load_dataset(data_dir):
             with open(fpath, 'r') as f:
                 data = json.load(f)
                 
-                # Reconstruct object (handles new fields automatically)
+                # Reconstruct object
                 turns = [DebateTurn(**t) for t in data['turns']]
                 log = DebateLog(
                     debate_id=data['debate_id'],
-                    claim_id=data['claim_id'],
+                    claim_id=str(data['claim_id']), # Ensure ID is a string
                     claim_text=data['claim_text'],
                     ground_truth=data['ground_truth'],
                     turns=turns
@@ -45,7 +49,7 @@ def load_dataset(data_dir):
                 graph.y = torch.tensor([1.0 if log.ground_truth else 0.0], dtype=torch.float)
                 graphs.append(graph)
         except Exception as e:
-            print(f"⚠️ Skipping broken file {fpath}: {e}")
+            print(f"⚠️ Skipping broken file {os.path.basename(fpath)}: {e}")
             
     return graphs
 
@@ -54,9 +58,14 @@ def train():
     print(f"🏋️ Training on {device}")
     
     # 1. Load Data
-    graphs = load_dataset("data/processed/training_set")
+    # FIX: Point to 'train_set' instead of 'training_set'
+    TRAIN_DIR = "data/processed/train_set"
+    
+    graphs = load_dataset(TRAIN_DIR)
+    
     if not graphs:
-        print("❌ No data found! Run 'scripts/generate_data.py' first.")
+        print(f"❌ No data found in {TRAIN_DIR}")
+        print("💡 Run 'scripts/generate_data.py' (with SPLIT_NAME='train') first.")
         return
 
     # 2. Setup Model
@@ -78,7 +87,7 @@ def train():
     print("\n🚀 STARTING TRAINING LOOP...")
     model.train()
     
-    # Train for 20 Epochs (Quick training for small dataset)
+    # Train for 20 Epochs
     for epoch in range(20): 
         total_loss = 0
         random.shuffle(graphs)
@@ -101,7 +110,6 @@ def train():
 
     # Save
     out_path = "data/processed/hgt_judge.pth"
-    # Create dir if not exists
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     torch.save(model.state_dict(), out_path)
     print(f"💾 Model saved to {out_path}")

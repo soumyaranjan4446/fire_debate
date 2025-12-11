@@ -12,57 +12,66 @@ class DebateManager:
         self.pro = pro
         self.con = con
         self.retriever = retriever
-        
-        # Initialize Helper Agents (Share the LLM to save memory)
+        # Helper agents share the PRO agent's LLM to save memory
         self.moderator = ModeratorAgent(pro.llm)
         self.synthesizer = SynthesisAgent(pro.llm)
 
     def run_debate(self, claim: str, rounds: int = 2) -> DebateLog:
-        print(f"\n🔥 DEBATE START: '{claim}'")
+        # Display truncate
+        print(f"\n🔥 DEBATE START: '{claim[:100]}...'")
+        
         log = DebateLog(
             debate_id=str(uuid4())[:8], claim_id="gen", claim_text=claim, ground_truth=False
         )
         
-        # 1. Broad Initial Research (Populate Memory)
-        print("🌍 Manager performing initial broad research...")
-        docs = self.retriever.search_web(claim)
-        self.retriever.index_documents(docs)
+        # 1. Initial Research (Safe Mode)
+        # We search for the first 200 chars to seed the memory
+        print("🌍 Manager seeding knowledge base...")
+        try:
+            safe_query = claim[:200]
+            docs = self.retriever.search_web(safe_query)
+            self.retriever.index_documents(docs)
+        except Exception as e:
+            print(f"   ⚠️ Initial search failed (continuing anyway): {e}")
 
         # 2. Debate Loop
         phases = ["OPENING"] + ["REBUTTAL"] * (rounds - 1) + ["CLOSING"]
         agents = [self.pro, self.con]
         
+        # Variable to hold any pending instruction from the moderator
+        pending_instruction = None
+
         for phase in phases:
             print(f"\n--- {phase} ---")
             for agent in agents:
-                # --- MODERATOR CHECK ---
-                # Checks previous turns for repetition or toxicity
+                
+                # --- A. Moderator Check ---
+                # The moderator looks at the debate SO FAR to guide the NEXT speaker
                 instruction = self.moderator.monitor(log.turns)
+                
                 if instruction:
-                    print(f"   👨‍⚖️ MODERATOR INTERVENES: {instruction}")
-                    # We inject this instruction into the debate log as a special 'NEUTRAL' turn
-                    # This lets the Agent see it in history without breaking the schema
+                    print(f"   👨‍⚖️ MODERATOR: {instruction}")
+                    # Log the intervention
                     mod_turn = DebateTurn(
-                        turn_id=str(uuid4())[:8],
-                        agent_id="Moderator",
-                        stance="NEUTRAL",
-                        phase="MODERATION",
-                        text=f"[INSTRUCTION]: {instruction}",
-                        citations=[],
-                        search_query=None
+                        turn_id=str(uuid4())[:8], agent_id="Moderator", stance="NEUTRAL",
+                        phase="MODERATION", text=f"[INSTRUCTION]: {instruction}", citations=[]
                     )
                     log.add_turn(mod_turn)
+                    pending_instruction = instruction
+                else:
+                    pending_instruction = None
                 
-                # --- AGENT TURN ---
-                turn = agent.act(claim, log.turns, phase)
+                # --- B. Agent Turn ---
+                # Pass the instruction directly to the agent
+                turn = agent.act(claim, log.turns, phase, moderator_instruction=pending_instruction)
+                
                 log.add_turn(turn)
                 print(f"🗣️ {turn.agent_id}: {turn.text[:100]}...")
 
-        # 3. SYNTHESIS PHASE
-        print("\n📝 Synthesizing Debate Report...")
+        # 3. Synthesis
+        print("\n📝 Synthesizing Report...")
         summary = self.synthesizer.synthesize(log)
         log.summary = summary 
-        print(f"   Summary: {summary[:100]}...")
 
         self.retriever.clear_cache()
         return log
@@ -70,6 +79,6 @@ class DebateManager:
     def save_log(self, log, path):
         with open(path, 'w') as f:
             data = asdict(log)
-            # Handle datetime serialization
+            # Handle datetime objects for JSON
             data['turns'] = [{**t, 'created_at': t['created_at'].isoformat()} for t in data['turns']]
             json.dump(data, f, indent=2)

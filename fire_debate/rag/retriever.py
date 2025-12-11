@@ -6,24 +6,25 @@ from rank_bm25 import BM25Okapi
 from typing import List
 import uuid
 import numpy as np
+import os
 from fire_debate.schemas.evidence import EvidenceDoc
 
 class EvidenceRetriever:
     def __init__(self, config):
         self.cfg = config['retrieval']
         
-        # 1. Tavily (Web Search)
+        # 1. Tavily
         key = config.get('tavily', {}).get('api_key')
         if not key: raise ValueError("❌ Missing Tavily API Key in config!")
         self.tavily = TavilyClient(api_key=key)
         
-        # 2. Embedder (Vector Search)
+        # 2. Embedder
         print(f"📚 Loading Embedder: {self.cfg['embedding_model']}")
         self.emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name=self.cfg['embedding_model']
         )
         
-        # 3. Re-ranker (Precision Judge)
+        # 3. Re-ranker
         print("⚙️ Loading Cross-Encoder (Re-ranker)...")
         self.reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
         
@@ -35,8 +36,21 @@ class EvidenceRetriever:
             name="evidence_cache", embedding_function=self.emb_fn
         )
 
+    def log_retrieval(self, query: str, docs: List[EvidenceDoc]):
+        """DEBUG: Saves retrieval results to a log file."""
+        log_path = "data/processed/retrieval_debug.log"
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        
+        with open(log_path, "a", encoding="utf-8") as f:
+            f.write(f"\n\n🔍 QUERY: {query}\n")
+            if not docs:
+                f.write("   ❌ NO RESULTS FOUND.\n")
+            for i, doc in enumerate(docs):
+                f.write(f"   [{i+1}] {doc.title} (Score: {doc.reliability_score:.2f})\n")
+                f.write(f"       URL: {doc.source_url}\n")
+                f.write(f"       Snippet: {doc.snippet[:150]}...\n")
+
     def search_web(self, query: str) -> List[EvidenceDoc]:
-        """Scrapes high-quality data using Tavily."""
         print(f"   🔎 Web Search: '{query}'")
         docs = []
         try:
@@ -49,6 +63,8 @@ class EvidenceRetriever:
                     snippet=r.get('content'),
                     reliability_score=r.get('score', 0.8)
                 ))
+            # Log what we found on the web
+            self.log_retrieval(f"WEB SEARCH: {query}", docs)
         except Exception as e:
             print(f"   ❌ Tavily Error: {e}")
         return docs
@@ -62,10 +78,9 @@ class EvidenceRetriever:
         )
 
     def retrieve_context(self, query: str) -> List[EvidenceDoc]:
-        """Agentic Retrieval: Hybrid Search + Re-ranking"""
         if self.collection.count() == 0: return []
 
-        # A. Broad Vector Search (Get top 20)
+        # A. Broad Vector Search
         n_fetch = self.cfg['top_k_evidence'] * 4
         results = self.collection.query(query_texts=[query], n_results=n_fetch)
         
@@ -82,28 +97,31 @@ class EvidenceRetriever:
 
         if not candidates: return []
 
-        # B. Keyword Search (BM25) - Boosts exact matches
-        tokenized_corpus = [doc.snippet.split() for doc in candidates]
-        bm25 = BM25Okapi(tokenized_corpus)
-        bm25_scores = bm25.get_scores(query.split())
+        # B. Keyword (BM25)
+        try:
+            tokenized_corpus = [doc.snippet.split() for doc in candidates]
+            bm25 = BM25Okapi(tokenized_corpus)
+            bm25_scores = bm25.get_scores(query.split())
+        except:
+            bm25_scores = [0.0] * len(candidates)
 
-        # C. Re-ranking (Cross-Encoder) - The Logic Check
+        # C. Re-ranking
         pairs = [[query, doc.snippet] for doc in candidates]
         cross_scores = self.reranker.predict(pairs)
 
         # D. Fusion
         for i, doc in enumerate(candidates):
-            # Weighted: 70% Semantic Re-ranker, 30% Keyword Match
-            # Normalize BM25 roughly
             norm_bm25 = bm25_scores[i] / (max(bm25_scores) + 1e-9)
             final_score = (0.7 * cross_scores[i]) + (0.3 * norm_bm25)
-            
-            # Convert logic score to 0-1 probability
             doc.reliability_score = float(1 / (1 + np.exp(-final_score)))
 
-        # Sort and Return Top K
         ranked = sorted(candidates, key=lambda x: x.reliability_score, reverse=True)
-        return ranked[:self.cfg['top_k_evidence']]
+        final_docs = ranked[:self.cfg['top_k_evidence']]
+        
+        # Log what the agent actually sees
+        self.log_retrieval(f"MEMORY RETRIEVAL: {query}", final_docs)
+        
+        return final_docs
     
     def clear_cache(self):
         try: self.client.delete_collection("evidence_cache")

@@ -3,14 +3,13 @@ import os
 from pathlib import Path
 
 # --- 1. Path Setup (Critical for imports) ---
-# Adds the project root to python path so we can import 'fire_debate'
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, '..'))
 if project_root not in sys.path:
     sys.path.append(project_root)
 
 import yaml
-import torch
+import json
 from fire_debate.agents.local_client import LocalHFClient
 from fire_debate.agents.debater import DebaterAgent, AgentConfig
 from fire_debate.agents.librarian import Librarian
@@ -18,9 +17,9 @@ from fire_debate.rag.retriever import EvidenceRetriever
 from fire_debate.debate.manager import DebateManager
 
 def main():
-    print("🚀 Initializing FIRE-Debate System...")
+    print("🚀 Initializing Single Debate Test...")
 
-    # 2. Load Configuration
+    # 2. Load Config
     config_path = os.path.join(project_root, "configs", "base.yaml")
     if not os.path.exists(config_path):
         print(f"❌ Config not found at {config_path}")
@@ -33,39 +32,41 @@ def main():
     print(f"⚙️ Loading AI Brain ({cfg['llm']['model_id']})...")
     llm = LocalHFClient(cfg)
     
-    print("📚 Connecting to Knowledge Base (Tavily + Chroma)...")
+    print("📚 Connecting to Knowledge Base...")
     retriever = EvidenceRetriever(cfg)
     librarian = Librarian()
 
     # 4. Create Agents
-    # "RationalProponent" vs "RationalOpponent"
-    # (To use the liar, change name to "SophistOpponent" and use SophistAgent class)
-    print("👥 Spawning Agents...")
-    pro_config = AgentConfig(name="Alice", stance="PRO", style="academic")
-    con_config = AgentConfig(name="Bob", stance="CON", style="skeptical")
-
-    alice = DebaterAgent(pro_config, llm, retriever, librarian)
-    bob = DebaterAgent(con_config, llm, retriever, librarian)
-
-    # 5. Create Manager
-    # The Manager will automatically spawn the Moderator & Synthesizer internally
+    # We use "Rational" agents to see if they can effectively fact-check
+    alice = DebaterAgent(AgentConfig("Alice", "PRO", "academic"), llm, retriever, librarian)
+    bob = DebaterAgent(AgentConfig("Bob", "CON", "skeptical"), llm, retriever, librarian)
+    
+    # Manager handles Moderator & Synthesizer internally
     manager = DebateManager(alice, bob, retriever)
 
-    # 6. Run the Debate
-    topic = "Artificial Intelligence will eventually surpass human intelligence."
+    # 5. Define a REAL WORLD Claim (Long text, similar to your dataset)
+    # This tests if your 'Query Distillation' fix works (preventing Tavily crash)
+    topic = (
+        "Recent reports suggest that drinking 3 liters of coffee daily can reverse aging "
+        "and cure balding, based on a viral study from the 'Institute of Caffeine Sciences'. "
+        "Critics argue this is pseudoscience marketing by coffee distributors."
+    )
+    
     print(f"\n🔥 TOPIC: '{topic}'")
     print("------------------------------------------------")
     
-    # This triggers the full Agentic Loop (Think -> Search -> Argue)
+    # 6. Run Debate
+    # This triggers the full Agentic Loop: Think -> Query -> Search -> Argue -> Monitor
     log = manager.run_debate(topic, rounds=2)
 
-    # 7. Save Artifacts
+    # 7. Save Artifact
     output_dir = os.path.join(project_root, "data", "processed")
     os.makedirs(output_dir, exist_ok=True)
+    save_path = os.path.join(output_dir, "single_run_debug.json")
     
-    save_path = os.path.join(output_dir, "debate_result.json")
     manager.save_log(log, save_path)
     print(f"\n✅ Debate Log Saved: {save_path}")
+    print("   (Check this file to see the 'search_query' fields!)")
 
 if __name__ == "__main__":
     main()

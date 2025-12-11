@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Literal, Optional
-from datetime import datetime
+from uuid import uuid4
+from datetime import datetime, timezone # <--- Added timezone
 
 Stance = Literal["PRO", "CON", "NEUTRAL"]
 Phase = Literal["OPENING", "REBUTTAL", "CLOSING", "MODERATION", "SYNTHESIS"]
@@ -18,7 +19,8 @@ class DebateTurn:
     # ✅ CRITICAL FIELD: Agentic Search Query storage
     search_query: Optional[str] = None 
     
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    # FIX: Use timezone-aware UTC timestamp to avoid DeprecationWarning
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 @dataclass
 class DebateLog:

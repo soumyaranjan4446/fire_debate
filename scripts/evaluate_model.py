@@ -1,7 +1,14 @@
 import sys
 import os
-# Fix imports so python can find fire_debate
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# --- 1. Robust Path Setup (Fixes "Module Not Found" & Windows path issues) ---
+# Get the absolute path of the folder containing this script (scripts/)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Get the project root (fire_debate/)
+project_root = os.path.abspath(os.path.join(current_dir, '..'))
+# Add to python path
+if project_root not in sys.path:
+    sys.path.append(project_root)
 
 import torch
 import json
@@ -12,10 +19,20 @@ from fire_debate.insight.graph_builder import GraphBuilder
 from fire_debate.insight.hgt_judge import HGTJudge
 
 def load_test_data(data_dir):
-    files = glob.glob(f"{data_dir}/*.json")
-    print(f"📂 Loading {len(files)} test samples...")
+    # Ensure we look at the absolute path
+    abs_data_dir = os.path.abspath(data_dir)
     
-    # Use CPU for building graphs (saving GPU for the model inference)
+    print(f"📂 Searching for data in:\n   -> {abs_data_dir}")
+    
+    # Search for json files
+    search_path = os.path.join(abs_data_dir, "*.json")
+    files = glob.glob(search_path)
+    print(f"   Found {len(files)} test samples.")
+    
+    if len(files) == 0:
+        return [], []
+
+    # Use CPU for building graphs
     builder = GraphBuilder(device="cpu")
     graphs = []
     y_true = []
@@ -25,25 +42,24 @@ def load_test_data(data_dir):
             with open(fpath, 'r') as f:
                 data = json.load(f)
                 
-                # Reconstruct DebateLog object from JSON
-                # The **t unpacking works even if we added 'search_query' to the schema
+                # Reconstruct DebateLog object
                 turns = [DebateTurn(**t) for t in data['turns']]
                 
                 log = DebateLog(
                     debate_id=data['debate_id'],
-                    claim_id=data['claim_id'],
+                    claim_id=str(data['claim_id']),
                     claim_text=data['claim_text'],
                     ground_truth=data['ground_truth'],
                     turns=turns
                 )
                 
-                # Build the Neuro-Symbolic Graph
+                # Build Neuro-Symbolic Graph
                 graph = builder.build_graph(log)
                 graphs.append(graph)
                 y_true.append(1 if log.ground_truth else 0)
                 
         except Exception as e:
-            print(f"⚠️ Skipping broken/incompatible file {fpath}: {e}")
+            print(f"⚠️ Skipping broken file {os.path.basename(fpath)}: {e}")
             
     return graphs, y_true
 
@@ -51,33 +67,37 @@ def evaluate():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"🧪 Evaluating on {device}...")
     
-    # 1. Load Data
-    # In a real paper, you would have a separate 'data/processed/test_set'
-    # For now, we reuse training_set to verify the pipeline works
-    graphs, y_true = load_test_data("data/processed/training_set")
+    # --- PATH FIX: Use absolute path to 'test_set' ---
+    TEST_DIR = os.path.join(project_root, "data", "processed", "test_set")
+    
+    graphs, y_true = load_test_data(TEST_DIR)
     
     if not graphs:
-        print("❌ No data found. Run 'scripts/generate_data.py' first.")
+        print(f"❌ No data found! Please check that this folder exists:")
+        print(f"   {TEST_DIR}")
+        print("💡 Hint: Did you run 'scripts/generate_data.py' with SPLIT_NAME='test'?")
         return
 
-    # 2. Load Model
-    # Get metadata from the first graph to initialize dimensions correctly
+    # Load Model (Metadata needed for dimensions)
     metadata = graphs[0].metadata()
     model = HGTJudge(64, 1, 2, 2, metadata).to(device)
     
-    model_path = "data/processed/hgt_judge.pth"
+    # Use absolute path for model weights
+    model_path = os.path.join(project_root, "data", "processed", "hgt_judge.pth")
+    
     try:
         model.load_state_dict(torch.load(model_path, map_location=device))
-        print(f"✅ Trained model loaded from {model_path}")
+        print(f"✅ Trained model loaded from {os.path.basename(model_path)}")
     except FileNotFoundError:
-        print("❌ Model weights not found. Run 'fire_debate/training/train_judge.py' first!")
+        print(f"❌ Model weights not found at: {model_path}")
+        print("   Run 'fire_debate/training/train_judge.py' first!")
         return
 
-    # 3. Inference Loop
+    # Inference
     model.eval()
     y_pred = []
     
-    print("running Inference loop...")
+    print("🚀 Running Inference Loop...")
     with torch.no_grad():
         for graph in graphs:
             graph = graph.to(device)
@@ -86,11 +106,11 @@ def evaluate():
             logits = model(graph.x_dict, graph.edge_index_dict)
             prob = logits.item()
             
-            # Threshold at 0.5 (True > 0.5)
+            # Threshold at 0.5
             prediction = 1 if prob > 0.5 else 0
             y_pred.append(prediction)
 
-    # 4. Metrics Report
+    # Metrics
     print("\n" + "="*60)
     print("📊 FIRE-DEBATE RESULTS (Neuro-Symbolic Judge)")
     print("="*60)

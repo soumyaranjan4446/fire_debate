@@ -6,7 +6,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import yaml
 import json
 import torch
-from datasets import load_dataset
+import random
+from datasets import load_dataset, concatenate_datasets
 from tqdm import tqdm
 from pathlib import Path
 
@@ -17,10 +18,25 @@ from fire_debate.rag.retriever import EvidenceRetriever
 from fire_debate.debate.manager import DebateManager
 
 def main():
-    print("🚀 Initializing Mass Generation (Dataset: ARG-EN Local)...")
+    print("🚀 Initializing Balanced Mass Generation (Dataset: ARG-EN Local)...")
     
+    # --- CONFIGURATION ---
+    # Change this to "train" to generate training data
+    # Change this to "test" to generate evaluation data
+    SPLIT_NAME = "train" 
+    
+    # How many debates to generate per class?
+    # 10 Real + 10 Fake = 20 Total Debates. 
+    # Increase this to 50 or 100 for the final paper run.
+    SAMPLES_PER_CLASS = 10 
+    # ---------------------
+
     # 1. Setup Configuration
     config_path = os.path.join(os.path.dirname(__file__), '../configs/base.yaml')
+    if not os.path.exists(config_path):
+        print(f"❌ Config not found at {config_path}")
+        return
+
     with open(config_path, "r") as f:
         cfg = yaml.safe_load(f)
     
@@ -38,15 +54,11 @@ def main():
     manager = DebateManager(alice, bob, retriever)
 
     # 2. Load Local JSON Files
-    # NOTE: Ensure you moved your json files to data/raw/
     data_files = {
         "train": "data/raw/train.json",
         "validation": "data/raw/val.json", 
         "test": "data/raw/test.json"
     }
-    
-    # CHANGE THIS to "train" for training data, or "test" for evaluation data
-    SPLIT_NAME = "train" 
     
     print(f"📥 Loading local dataset ({SPLIT_NAME} split)...")
     
@@ -60,38 +72,52 @@ def main():
         print(f"❌ Error loading dataset: {e}")
         return
 
-    # 3. Select Samples
-    # Set to 20 or 50 for a good training batch. Set to 5 for a quick test.
-    LIMIT = 5
-    subset = dataset.select(range(LIMIT))
+    # 3. Balance the Dataset (Critical for Research Quality)
+    print("⚖️ Balancing classes (50% Real / 50% Fake)...")
     
-    # Output Directory
+    # Filter for Real (0) and Fake (1) based on ARG-EN labels
+    # Label 0 = Real
+    # Label 1 = Fake
+    real_news = dataset.filter(lambda x: x['label'] == 0)
+    fake_news = dataset.filter(lambda x: x['label'] == 1)
+    
+    print(f"   Found {len(real_news)} Real and {len(fake_news)} Fake items available.")
+    
+    # Select N samples from each class
+    # We use shuffle to ensure we get different random articles each time
+    real_subset = real_news.shuffle(seed=42).select(range(min(len(real_news), SAMPLES_PER_CLASS)))
+    fake_subset = fake_news.shuffle(seed=42).select(range(min(len(fake_news), SAMPLES_PER_CLASS)))
+    
+    # Combine and Shuffle final list
+    balanced_dataset = concatenate_datasets([real_subset, fake_subset])
+    balanced_dataset = balanced_dataset.shuffle(seed=123)
+    
+    # Set up output directory
+    # Note: We save to 'train_set' or 'test_set' to match the evaluation script logic
     output_dir = Path(f"data/processed/{SPLIT_NAME}_set")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"🔥 Starting Generation of {LIMIT} debates...")
+    print(f"🔥 Starting Generation of {len(balanced_dataset)} debates...")
 
-    for i, row in tqdm(enumerate(subset), total=LIMIT):
-        # Extract fields based on your JSON structure
+    for i, row in tqdm(enumerate(balanced_dataset), total=len(balanced_dataset)):
+        # Extract fields from ARG-EN format
         claim = row.get('content') 
         if not claim: continue
 
         label_id = row.get('label')
         
-        # ARG-EN Label Mapping:
-        # 0 = Real (True)
-        # 1 = Fake (False)
+        # Logic: Label 0 is Real (True), Label 1 is Fake (False)
         is_true = (label_id == 0)
 
         try:
-            # Truncate very long news articles to first 300 chars to save context window
-            short_claim = claim[:300] + "..." if len(claim) > 300 else claim
+            # Truncate very long news articles to first 400 chars to help the Agents focus
+            short_claim = claim[:400] + "..." if len(claim) > 400 else claim
             
             # Run Debate
             log = manager.run_debate(short_claim, rounds=2)
             log.ground_truth = is_true
             
-            # Save
+            # Save using unique ID to avoid overwrites
             filename = f"sample_{i}_{log.debate_id}.json"
             manager.save_log(log, str(output_dir / filename))
             

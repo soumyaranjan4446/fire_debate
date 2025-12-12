@@ -1,7 +1,7 @@
 import sys
 import os
 import argparse
-import re # Added regex for extraction
+import re
 
 # --- Path Setup ---
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -47,18 +47,19 @@ def predict(user_claim, ground_truth=None):
     manager = DebateManager(alice, bob, retriever)
 
     # --- PHASE 1: DEBATE ---
-    # Safe truncate for search context, but agents see full claim
     log = manager.run_debate(user_claim, rounds=2)
     
     # --- PHASE 2: GRAPH ---
     print("\n🕸️  Constructing Neuro-Symbolic Graph...")
-    builder = GraphBuilder(device="cpu")
+    # Use CUDA if available for the graph builder too (speed up NLI)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    builder = GraphBuilder(device=device) 
+    
     graph = builder.build_graph(log)
     
     # --- PHASE 3: JUDGEMENT ---
     print("⚖️  Consulting the HGT Judge...")
     
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     graph = graph.to(device)
     metadata = graph.metadata()
     model = HGTJudge(64, 1, 2, 2, metadata).to(device)
@@ -73,7 +74,9 @@ def predict(user_claim, ground_truth=None):
     model.eval()
     with torch.no_grad():
         logits = model(graph.x_dict, graph.edge_index_dict)
-        probability = logits.item()
+        
+        # FIX: Convert Logits to Probability for display
+        probability = torch.sigmoid(logits).item()
 
     # --- RESULT EXTRACTION ---
     is_true = probability > 0.5

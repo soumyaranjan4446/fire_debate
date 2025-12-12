@@ -1,25 +1,30 @@
-experiment_name: "fire_debate_v2_tavily"
+experiment_name: "fire_debate"
 device: "cuda"
 
-# --- ADD THIS SECTION ---
+# --- TAVILY API ---
 tavily:
-  api_key: "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"  # <--- Get this from tavily.com
-# ------------------------
+  api_key: "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"  # PASTE KEY
 
+# --- LLM (The 1.5B Speedster) ---
 llm:
-  model_id: "Qwen/Qwen2.5-0.5B-Instruct" 
-  max_new_tokens: 512
-  temperature: 0.3
-  quantization: "4bit" 
+  # Qwen 1.5B is tiny but capable. On an L40, this is instant.
+  model_id: "Qwen/Qwen2.5-1.5B-Instruct" 
+  
+  # Parameters for speed & focus
+  max_new_tokens: 300       
+  temperature: 0.6          
+  quantization: "none"      # FP16
 
+# --- RETRIEVAL ---
 retrieval:
-  embedding_model: "BAAI/bge-small-en-v1.5" # or "sentence-transformers/all-MiniLM-L6-v2"
-  max_search_results: 3
-  top_k_evidence: 2
+  embedding_model: "BAAI/bge-small-en-v1.5" # Very fast embedder
+  max_search_results: 3     
+  top_k_evidence: 2         
   db_path: "./data/chroma_db"
 
+# --- DEBATE SETTINGS ---
 debate:
-  rounds: 3
+  rounds: 2                 
   agents:
     pro: "RationalProponent"
     con: "RationalOpponent"

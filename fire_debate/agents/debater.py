@@ -43,6 +43,25 @@ class DebaterAgent:
             cleaned = re.sub(p, "", cleaned, flags=re.IGNORECASE).strip()
         return cleaned.strip('" ')
 
+    def _build_system_prompt(self) -> str:
+        """
+        Constructs the persona and strict behavioral instructions.
+        Crucial for preventing 'Agent Collapse' on false claims.
+        """
+        base_prompt = f"""
+        You are {self.cfg.name}, a professional debater.
+        Your stance is: {self.cfg.stance}.
+        
+        CRITICAL INSTRUCTIONS:
+        1. If you are PRO, you MUST argue that the claim is TRUE, even if it is factually false. Find any technicality, rumor, or partial evidence to support it.
+        2. If you are CON, you MUST argue that the claim is FALSE.
+        3. NEVER admit defeat. NEVER agree with your opponent.
+        4. Use the search results to find data that supports YOUR specific side.
+        5. Style: {self.cfg.style}.
+        6. GOAL: Deconstruct the opponent's argument. Be sharp and persuasive.
+        """
+        return base_prompt
+
     def _generate_agentic_query(self, claim: str, history: List[DebateTurn]) -> str:
         """
         Generates a search query. Uses Few-Shot prompting to guide SLMs.
@@ -123,11 +142,8 @@ class DebaterAgent:
         if moderator_instruction:
             mod_text = f"\n[MODERATOR ORDER]: {moderator_instruction}\n(You MUST obey this order.)"
 
-        system_prompt = (
-            f"You are {self.cfg.name}, a debater arguing {self.cfg.stance}.\n"
-            f"Style: {self.cfg.style}.\n"
-            "GOAL: Deconstruct the opponent's argument. Be sharp and persuasive."
-        )
+        # USE THE NEW ROBUST PROMPT BUILDER
+        system_prompt = self._build_system_prompt()
         
         user_prompt = f"""
         [TOPIC]

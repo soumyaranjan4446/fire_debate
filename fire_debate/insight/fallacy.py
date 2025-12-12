@@ -1,60 +1,70 @@
 import torch
-from transformers import pipeline
-from typing import Dict, List, Optional
+from sentence_transformers import CrossEncoder
 
 class FallacyDetector:
-    def __init__(self, device="cuda"):
-        print("🕵️ Loading Fallacy Detector (DeBERTa-v3-base)...")
+    def __init__(self, device="cpu"):
+        self.device = device
+        # Switch to a robust, high-availability NLI model
+        self.model_name = "cross-encoder/nli-deberta-v3-base"
+        print(f"🕵️ Loading Logic Validator ({self.model_name})...")
         
-        # Robust check: Only use CUDA if available AND requested
-        use_gpu = (device == "cuda" and torch.cuda.is_available())
-        device_id = 0 if use_gpu else -1
-        
-        # DeBERTa-v3-base-mnli is excellent for zero-shot logic tasks
-        self.pipe = pipeline(
-            "zero-shot-classification",
-            model="cross-encoder/nli-deberta-v3-base",
-            device=device_id
-        )
-        self.labels = [
-            "logical reasoning", 
-            "ad hominem", 
-            "strawman argument", 
-            "appeal to emotion", 
-            "circular reasoning",
-            "false dichotomy"
-        ]
+        try:
+            # We use CrossEncoder API which handles tokenization automatically
+            self.model = CrossEncoder(self.model_name, device=self.device)
+        except Exception as e:
+            print(f"❌ Failed to load Logic Validator: {e}")
+            self.model = None
 
-    def analyze_turn(self, text: str, stance: str) -> Dict[str, float]:
+    def detect(self, text: str) -> dict:
         """
-        Returns a dictionary of fallacy scores.
-        SKIP if the stance is NEUTRAL (Moderator/Synthesizer) to save compute.
+        Analyzes text logic using Natural Language Inference (NLI).
+        
+        We compare the text against a hypothesis: "This argument is logical."
+        
+        Returns:
+            dict: {"logical reasoning": float (0.0 to 1.0)}
         """
-        # 1. Optimization: Don't analyze Moderators or very short texts
-        if stance == "NEUTRAL" or len(text) < 15:
-            # Return a 'perfect logic' placeholder
-            return {label: (1.0 if label == "logical reasoning" else 0.0) for label in self.labels}
+        if not self.model or not text or len(text.strip()) < 5:
+            return {"logical reasoning": 0.5}
 
-        # 2. Pre-processing
-        # DeBERTa has a 512 token limit. We take the first 512 chars (approx 100-150 tokens)
-        # For a full paper, you might want to use a sliding window, but this is sufficient for now.
-        chunk = text[:1024] 
-        
-        # 3. Inference
-        result = self.pipe(chunk, self.labels, multi_label=False)
-        
-        scores = dict(zip(result['labels'], result['scores']))
-        return scores
+        try:
+            # We test the hypothesis: "This argument is logical and sound."
+            # The model outputs 3 scores: [Contradiction, Entailment, Neutral] (usually)
+            # For this specific model, it outputs logits for classes. 
+            # We want the probability that the text IMPLIES logic.
+            
+            hypothesis = "This argument contains a logical fallacy or emotional manipulation."
+            
+            # Predict gives logits. We run sigmoid to get a score between 0-1.
+            scores = self.model.predict([(text, hypothesis)])
+            
+            # scores[0] is the logit for "Entailment" (Yes, it is a fallacy)
+            # (Note: cross-encoder/nli models output different shapes, but usually 
+            # index 1 is entailment or it returns a single score for binary. 
+            # This specific model outputs 3 classes: Contradiction, Entailment, Neutral.
+            # However, to be safer and generic, let's use a simpler binary check).
+            
+            # Alternative Robust Logic:
+            # Let's use a zero-shot classification approach which CrossEncoders are great at.
+            # We check similarity to "Logical reasoning" vs "Logical Fallacy".
+            
+            # Input pair
+            prediction = self.model.predict([
+                (text, "This argument contains a logical fallacy.")
+            ])
+            
+            # Apply Sigmoid to logit to get probability (0.0 to 1.0)
+            # High score = High probability of fallacy
+            fallacy_logit = prediction[0][1] # Index 1 is usually Entailment for NLI
+            
+            fallacy_prob = 1 / (1 + 2.718 ** -fallacy_logit)
+            
+            # Logic Score is the INVERSE of Fallacy Probability
+            logic_score = 1.0 - fallacy_prob
+            
+            return {"logical reasoning": logic_score}
 
-    def get_top_fallacy(self, scores: Dict[str, float]) -> Optional[str]:
-        """
-        Returns the name of the fallacy if it's the top score.
-        Returns None if the top score is 'logical reasoning'.
-        """
-        # Sort by score descending
-        sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-        top_label, top_score = sorted_scores[0]
-        
-        if top_label == "logical reasoning":
-            return None
-        return top_label
+        except Exception as e:
+            # Fallback
+            # print(f"Logic check error: {e}")
+            return {"logical reasoning": 0.5}

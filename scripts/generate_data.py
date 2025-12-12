@@ -23,7 +23,7 @@ def main():
     # --- CONFIGURATION ---
     # Change this to "train" to generate training data
     # Change this to "test" to generate evaluation data
-    SPLIT_NAME = "train" 
+    SPLIT_NAME = "test" 
     
     # How many debates to generate per class?
     # 10 Real + 10 Fake = 20 Total Debates. 

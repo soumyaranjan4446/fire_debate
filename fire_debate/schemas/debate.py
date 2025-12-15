@@ -1,39 +1,34 @@
 from dataclasses import dataclass, field
-from typing import List, Literal, Optional
-from uuid import uuid4
-from datetime import datetime, timezone # <--- Added timezone
-
-Stance = Literal["PRO", "CON", "NEUTRAL"]
-Phase = Literal["OPENING", "REBUTTAL", "CLOSING", "MODERATION", "SYNTHESIS"]
+from typing import List, Optional, Any
 
 @dataclass
 class DebateTurn:
-    """A single utterance by an agent."""
+    """
+    Represents a single speech or interaction by an agent.
+    """
     turn_id: str
     agent_id: str
-    stance: Stance
-    phase: Phase
+    agent_name: str
+    stance: str  # "PRO", "CON", "NEUTRAL"
     text: str
-    citations: List[str]
+    round: int
     
-    # ✅ CRITICAL FIELD: Agentic Search Query storage
-    search_query: Optional[str] = None 
-    
-    # FIX: Use timezone-aware UTC timestamp to avoid DeprecationWarning
-    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    # Fields with defaults must come AFTER required fields
+    citations: List[str] = field(default_factory=list)
+    search_query: str = ""
+    phase: str = "ARGUMENT"  # E.g., "OPENING", "CROSS_EX_ASK"
 
 @dataclass
 class DebateLog:
-    """The complete artifact of a research experiment run."""
+    """
+    The full transcript of a debate session.
+    """
     debate_id: str
     claim_id: str
     claim_text: str
-    ground_truth: bool
-    turns: List[DebateTurn] = field(default_factory=list)
-    
-    # Results
-    summary: Optional[str] = None
-    verdict_score: Optional[float] = None
+    ground_truth: Optional[bool]
+    turns: List[DebateTurn]
+    summary: str = ""
 
     def add_turn(self, turn: DebateTurn):
         self.turns.append(turn)

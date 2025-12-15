@@ -9,7 +9,7 @@ class SophistAgent(DebaterAgent):
     and 'Strawman' attacks even when they cite real evidence.
     """
     
-    def _construct_system_prompt(self) -> str:
+    def _build_system_prompt(self) -> str:
         # We OVERRIDE the rational prompt with a manipulative one
         base = (
             f"You are {self.cfg.name}, a 'Sophist' debater arguing for {self.cfg.stance}.\n"
@@ -45,5 +45,6 @@ class SophistAgent(DebaterAgent):
         Output ONLY the query.
         """
         
+        # Note: self.llm is inherited from DebaterAgent
         query = self.llm.generate("You are a biased search engine.", prompt)
         return query.strip().replace('"', '').replace("Search:", "")

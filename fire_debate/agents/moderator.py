@@ -1,9 +1,9 @@
-from typing import List, Optional
-from fire_debate.agents.base import LLMClient
+from typing import List, Optional, Any
 from fire_debate.schemas.debate import DebateTurn
 
 class ModeratorAgent:
-    def __init__(self, llm: LLMClient):
+    def __init__(self, llm: Any):
+        # We use Any for llm to avoid importing a base class that might not exist
         self.llm = llm
         self.name = "Moderator"
 
@@ -23,7 +23,7 @@ class ModeratorAgent:
         # --- 1. HEURISTIC CHECKS (Fast & Cheap) ---
         
         # Tone Check: Stop rudeness immediately
-        bad_words = ["stupid", "idiot", "liar", "nonsense", "delusional", "shut up"]
+        bad_words = ["stupid", "idiot", "liar", "nonsense", "delusional", "shut up", "dumb"]
         if any(w in last_turn.text.lower() for w in bad_words):
             return "Maintain professional decorum. Attack the argument, not the person."
 
@@ -34,25 +34,28 @@ class ModeratorAgent:
 
         # --- 2. LLM LOGIC CHECK (Smart & Deep) ---
         
-        last_exchange = f"{prev_turn.agent_id}: {prev_turn.text[:300]}\n{last_turn.agent_id}: {last_turn.text[:300]}"
+        last_exchange = f"{prev_turn.agent_id}: {prev_turn.text[:300]}...\n{last_turn.agent_id}: {last_turn.text[:300]}..."
         
-        prompt = f"""
-        You are the Debate Moderator. Review this recent exchange:
+        # Combined Prompt for LocalHFClient
+        full_prompt = (
+            f"You are a strict Debate Moderator. Review this recent exchange:\n\n"
+            f"{last_exchange}\n\n"
+            f"Check for:\n"
+            f"1. REPETITION: Are they repeating the same point?\n"
+            f"2. CIRCULARITY: Are they ignoring evidence?\n\n"
+            f"If the debate is healthy, reply 'PASS'.\n"
+            f"If there is an issue, issue a 1-sentence instruction to the NEXT speaker to fix it."
+        )
         
-        {last_exchange}
+        # FIX: Single argument call + Token limit
+        response = self.llm.generate(full_prompt, max_new_tokens=50)
         
-        Check for these issues:
-        1. REPETITION: Are they just repeating the same point?
-        2. CIRCULARITY: Are they ignoring each other's evidence?
-        
-        If the debate is healthy and moving forward, reply "PASS".
-        If there is an issue, issue a short, direct instruction to the NEXT speaker to fix it (e.g., "Address the evidence about X directly").
-        """
-        
-        response = self.llm.generate("You are a strict referee.", prompt)
-        
-        # If the LLM says PASS or gives a very short/empty response, do nothing
-        if "PASS" in response.upper() or len(response) < 5:
+        # Cleaning: sometimes models say "I think it is a PASS."
+        if "PASS" in response.upper():
+            return None
+            
+        # If the response is empty or weirdly short, ignore it
+        if len(response.strip()) < 5:
             return None
         
         return response.strip()

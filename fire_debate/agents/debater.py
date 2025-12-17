@@ -55,7 +55,7 @@ class DebaterAgent:
             text += f"-[{i+1}] {content[:300]}... (Reliability: {score:.2f})\n"
         return text
 
-    def act(self, claim: str, round_num: int, phase: str, opponent_last_arg: str = None) -> str:
+    def act(self, claim: str, round_num: int, phase: str, opponent_last_arg: str = None):
         # 1. Dynamic Phase Instructions
         # This switches the Agent's "Brain Mode"
         instructions_map = {
@@ -71,8 +71,15 @@ class DebaterAgent:
         # We skip search for 'CROSS_EX_ANSWER' to simulate rapid-fire responses
         if phase != "CROSS_EX_ANSWER":
             query = self._generate_search_query(claim, phase)
+            # --- DEBUG PRINT ---
+            print(f"\n[DEBUG] {self.name} Search Query: '{query}'")
+            # -------------------
             raw_evidence = self.retriever.retrieve(query) 
             trusted_evidence = self.librarian.filter_evidence(raw_evidence, claim_context=claim)
+
+            # --- DEBUG PRINT ---
+            print(f"[DEBUG] Evidence Found: {len(trusted_evidence)} docs")
+            # -------------------
         else:
             trusted_evidence = [] # Rely on memory/logic for answers
 
@@ -111,4 +118,6 @@ class DebaterAgent:
         cleaned_response = self._clean_output(response)
         
         self.history.append(cleaned_response)
-        return cleaned_response
+        
+        # --- FIX: Return BOTH text and evidence to satisfy DebateManager ---
+        return cleaned_response, trusted_evidence

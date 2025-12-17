@@ -3,7 +3,9 @@ import os
 
 # --- 1. Robust Path Setup ---
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '../..')) # Go up 2 levels from fire_debate/training/
+# FIX: Go up just ONE level from 'scripts/' to 'fire_debate2/'
+project_root = os.path.abspath(os.path.join(current_dir, '..')) 
+
 if project_root not in sys.path:
     sys.path.append(project_root)
 
@@ -26,10 +28,12 @@ def load_test_data(data_dir):
     if len(files) == 0:
         return [], []
 
+    # Initialize GraphBuilder (CPU is fine for loading)
     builder = GraphBuilder(device="cpu")
     graphs = []
     y_true = []
     
+    print("🕸️  Building Graphs from Test Data...")
     for fpath in files:
         try:
             with open(fpath, 'r', encoding='utf-8') as f:
@@ -82,6 +86,7 @@ def evaluate():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"🧪 Evaluating on {device}...")
     
+    # Path to TEST set
     TEST_DIR = os.path.join(project_root, "data", "processed", "test_set")
     
     graphs, y_true = load_test_data(TEST_DIR)
@@ -89,6 +94,7 @@ def evaluate():
     if not graphs:
         print(f"❌ No data found! Please check that this folder exists:")
         print(f"   {TEST_DIR}")
+        print("💡 Hint: Did you generate test data? Run: python scripts/generate_data.py --split test --count 20")
         return
 
     # --- FIX: Detect Feature Dimension ---
@@ -103,6 +109,7 @@ def evaluate():
     else:
         metadata = (list(graphs[0].x_dict.keys()), list(graphs[0].edge_index_dict.keys()))
     
+    # Initialize HGTModel with detected dimension
     model = HGTModel(
         in_channels=in_channels, # Pass the detected dimension (771)
         hidden_channels=64, 
@@ -136,7 +143,7 @@ def evaluate():
         for graph in graphs:
             graph = graph.to(device)
             
-            # Forward Pass (Single item batch, batch_dict=None is fine)
+            # Forward Pass (Single item batch, batch_dict=None is fine for list iteration)
             logits = model(graph.x_dict, graph.edge_index_dict, batch_dict=None)
             
             # Sigmoid for probability

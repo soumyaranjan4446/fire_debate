@@ -37,7 +37,8 @@ class DebateManager:
                 text=f"[INSTRUCTION]: {instruction}",
                 round=round_num,
                 citations=[],
-                search_query=""
+                search_query="",
+                phase="MODERATION" # Explicit phase for moderator
             )
             turns_list.append(mod_turn)
             
@@ -48,10 +49,23 @@ class DebateManager:
                 context_arg = f"[MODERATOR]: {instruction}"
 
         # 2. Agent Act
-        # Calls the LLM to generate the speech/answer
-        text = agent.act(claim, round_num, phase, opponent_last_arg=context_arg)
+        # FIXED: Now expects a tuple (text, evidence_list) from Option B
+        text, evidence_list = agent.act(claim, round_num, phase, opponent_last_arg=context_arg)
         
-        # 3. Log the Turn
+        # 3. Extract Citations from Evidence Objects
+        citations_to_save = []
+        if evidence_list:
+            for doc in evidence_list:
+                # Try common keys for source identification
+                ref = doc.get('url') or doc.get('link') or doc.get('source') or doc.get('title')
+                if ref:
+                    citations_to_save.append(str(ref))
+
+        # Optional: Debug print to verify citations are being caught
+        # if citations_to_save:
+        #    print(f"   📎 [MANAGER] Captured {len(citations_to_save)} citations from {agent.name}")
+
+        # 4. Log the Turn
         turn = DebateTurn(
             turn_id=str(uuid.uuid4())[:8],
             agent_id=agent.name,
@@ -59,59 +73,44 @@ class DebateManager:
             stance=agent.stance,
             text=text,
             round=round_num,
-            citations=[],
+            citations=citations_to_save,  # <--- FIXED: No longer hardcoded to []
             search_query="",
-            phase=phase  # <--- CRITICAL: Save "OPENING", "CROSS_EX", etc.
+            phase=phase 
         )
         turns_list.append(turn)
         
         return text
 
     def run_debate(self, claim: str, rounds: int = 1) -> DebateLog:
-        # print(f"\n🔥 DEBATE START: '{claim[:100]}...'")
-        
         # 1. Initialize Log
         debate_id = f"db_{int(time.time())}_{str(uuid.uuid4())[:4]}"
         turns: List[DebateTurn] = []
         
         # 2. Initial Research (Safe Mode)
-        # Seed the knowledge base with general context about the claim
         try:
             self.retriever.clear_cache()
-            # print("   🌍 Manager seeding knowledge base...")
             self.retriever.index_documents(self.retriever.search_web(claim[:200]))
         except Exception as e:
             print(f"   ⚠️ Initial search failed: {e}")
 
         # --- PHASE 1: OPENING STATEMENTS ---
-        # print("\n   --- PHASE 1: OPENING ---")
-        # Pro goes first, no context needed
         pro_open = self._execute_turn(self.pro, claim, 1, "OPENING", None, turns)
-        # Con responds to Pro's opening
         con_open = self._execute_turn(self.con, claim, 1, "OPENING", pro_open, turns)
 
         # --- PHASE 2: REBUTTAL ---
-        # print("\n   --- PHASE 2: REBUTTAL ---")
-        # Pro rebuts Con's opening
         pro_reb = self._execute_turn(self.pro, claim, 2, "REBUTTAL", con_open, turns)
-        # Con rebuts Pro's rebuttal
         con_reb = self._execute_turn(self.con, claim, 2, "REBUTTAL", pro_reb, turns)
 
-        # --- PHASE 3: CROSS-EXAMINATION (The "Fire" Round) ---
-        # print("\n   --- PHASE 3: CROSS-EXAMINATION ---")
-        
+        # --- PHASE 3: CROSS-EXAMINATION ---
         # Interaction A: Pro asks -> Con answers
         q_pro = self._execute_turn(self.pro, claim, 3, "CROSS_EX_ASK", con_reb, turns)
         a_con = self._execute_turn(self.con, claim, 3, "CROSS_EX_ANSWER", q_pro, turns)
         
         # Interaction B: Con asks -> Pro answers
-        # Note: Con asks based on Pro's rebuttal or generic stance
         q_con = self._execute_turn(self.con, claim, 3, "CROSS_EX_ASK", pro_reb, turns) 
         a_pro = self._execute_turn(self.pro, claim, 3, "CROSS_EX_ANSWER", q_con, turns)
 
         # --- PHASE 4: CLOSING ---
-        # print("\n   --- PHASE 4: CLOSING ---")
-        # Context passed here is the result of their own cross-ex exchange
         context_for_pro = f"My Question: {q_pro}\nOpponent Answer: {a_con}"
         pro_close = self._execute_turn(self.pro, claim, 4, "CLOSING", context_for_pro, turns)
         
@@ -119,7 +118,6 @@ class DebateManager:
         con_close = self._execute_turn(self.con, claim, 4, "CLOSING", context_for_con, turns)
 
         # 4. Synthesis
-        # print("\n   📝 Synthesizing Report...")
         log = DebateLog(
             debate_id=debate_id,
             claim_id="gen",
@@ -147,13 +145,13 @@ class DebateManager:
                     "summary": log.summary,
                     "turns": [
                         {
-                            "turn_id": t.turn_id,   # <--- Added
+                            "turn_id": t.turn_id,
                             "agent_id": t.agent_id,
                             "agent_name": getattr(t, 'agent_name', t.agent_id),
                             "stance": t.stance,
                             "text": t.text,
                             "round": t.round,
-                            "phase": getattr(t, 'phase', "ARGUMENT"), # <--- Added (Critical)
+                            "phase": getattr(t, 'phase', "ARGUMENT"),
                             "citations": t.citations
                         } 
                         for t in log.turns

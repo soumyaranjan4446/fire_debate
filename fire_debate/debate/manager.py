@@ -49,21 +49,26 @@ class DebateManager:
                 context_arg = f"[MODERATOR]: {instruction}"
 
         # 2. Agent Act
-        # FIXED: Now expects a tuple (text, evidence_list) from Option B
+        # Expects a tuple (text, evidence_list)
         text, evidence_list = agent.act(claim, round_num, phase, opponent_last_arg=context_arg)
         
-        # 3. Extract Citations from Evidence Objects
+        # 3. Extract Citations (CRITICAL UPGRADE)
+        # We now save the FULL object so GraphBuilder gets the score & snippet.
         citations_to_save = []
         if evidence_list:
             for doc in evidence_list:
-                # Try common keys for source identification
-                ref = doc.get('url') or doc.get('link') or doc.get('source') or doc.get('title')
-                if ref:
-                    citations_to_save.append(str(ref))
+                # Robustly grab content, url, and score
+                content = doc.get('content') or doc.get('text') or ""
+                url = doc.get('url') or doc.get('link') or doc.get('source') or "unknown"
+                score = doc.get('score', 0.9)
 
-        # Optional: Debug print to verify citations are being caught
-        # if citations_to_save:
-        #    print(f"   📎 [MANAGER] Captured {len(citations_to_save)} citations from {agent.name}")
+                # Create Rich Citation Object
+                rich_citation = {
+                    "text": content[:200],  # Save snippet (first 200 chars) for embedding
+                    "url": url,
+                    "score": float(score)   # Ensure it's a float
+                }
+                citations_to_save.append(rich_citation)
 
         # 4. Log the Turn
         turn = DebateTurn(
@@ -73,7 +78,7 @@ class DebateManager:
             stance=agent.stance,
             text=text,
             round=round_num,
-            citations=citations_to_save,  # <--- FIXED: No longer hardcoded to []
+            citations=citations_to_save,  # Now a list of Dicts
             search_query="",
             phase=phase 
         )

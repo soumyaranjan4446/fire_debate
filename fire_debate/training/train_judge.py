@@ -2,18 +2,18 @@ import sys
 import os
 
 # --- Path Setup ---
-# Assumes script is at fire_debate/training/train_judge.py
+# Fix: Go up 2 levels to find the project root
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, '../..'))
 
 if project_root not in sys.path:
-    sys.path.append(project_root)
+    print(f"🔧 Adding project root to path: {project_root}")
+    sys.path.insert(0, project_root)
 
-import torch
 import glob
 import json
-import random
-from torch_geometric.loader import DataLoader  # Efficient batching for Graphs
+import torch
+from torch_geometric.loader import DataLoader
 from fire_debate.schemas.debate import DebateLog, DebateTurn
 from fire_debate.insight.graph_builder import GraphBuilder
 from fire_debate.insight.hgt_judge import HGTModel
@@ -70,11 +70,13 @@ def load_dataset(data_dir):
                 graph = builder.build_graph(log)
                 
                 # Assign Label: 1.0 for True, 0.0 for False
+                # Ground Truth is Boolean in JSON (True/False)
                 label = 1.0 if log.ground_truth else 0.0
                 graph.y = torch.tensor([label], dtype=torch.float)
                 
                 # Basic validation
-                if graph.num_edges == 0:
+                # HeteroData checks are slightly different than standard Data
+                if 'argument' not in graph.node_types or graph['argument'].num_nodes == 0:
                     continue
 
                 graphs.append(graph)
@@ -90,10 +92,12 @@ def train():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"🏋️  Training on {device}")
     
-    TRAIN_DIR = os.path.join(project_root, "data", "processed", "train_set")
+    # Updated to match where generate_data.py saves files
+    TRAIN_DIR = os.path.join(project_root, "data", "processed", "train_set") 
     
     if not os.path.exists(TRAIN_DIR):
         print(f"❌ Training directory not found: {TRAIN_DIR}")
+        print("   Did you run scripts/generate_data.py?")
         return
 
     graphs = load_dataset(TRAIN_DIR)
@@ -102,30 +106,17 @@ def train():
         print("❌ No data found or all files were broken.")
         return
 
-    # --- Feature Dimension Check ---
-    # Check if x_dict exists and has keys
-    if not graphs[0].x_dict:
-        print("❌ Error: Graph has no node features (x_dict is empty). Check GraphBuilder.")
-        return
-
-    sample_node_type = list(graphs[0].x_dict.keys())[0]
-    in_channels = graphs[0].x_dict[sample_node_type].shape[1]
-    print(f"🔍 Detected input feature dimension: {in_channels}")
-
     # Use DataLoader for batching
     train_loader = DataLoader(graphs, batch_size=4, shuffle=True)
 
-    # Get Metadata for HGT
-    # Ensure metadata exists
-    if hasattr(graphs[0], 'metadata'):
-        metadata = graphs[0].metadata()
-    else:
-        # Fallback for older PyG versions
-        metadata = (list(graphs[0].x_dict.keys()), list(graphs[0].edge_index_dict.keys()))
+    # Get Metadata for HGT (Node Types, Edge Types)
+    metadata = graphs[0].metadata()
+    
+    print(f"🔍 Metadata detected: {metadata}")
     
     # Initialize Model
     model = HGTModel(
-        in_channels=in_channels,
+        in_channels=771,  # FIXED: Hardcoded to match GraphBuilder output
         hidden_channels=64, 
         out_channels=1, 
         num_heads=2, 

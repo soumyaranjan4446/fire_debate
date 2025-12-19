@@ -55,7 +55,8 @@ class DebaterAgent:
             text += f"-[{i+1}] {content[:300]}... (Reliability: {score:.2f})\n"
         return text
 
-    def act(self, claim: str, round_num: int, phase: str, opponent_last_arg: str = None):
+    # --- UPDATED METHOD SIGNATURE TO ACCEPT MODERATOR INSTRUCTION ---
+    def act(self, claim: str, round_num: int, phase: str, opponent_last_arg: str = None, moderator_instruction: str = None):
         # 1. Dynamic Phase Instructions
         # This switches the Agent's "Brain Mode"
         instructions_map = {
@@ -72,14 +73,17 @@ class DebaterAgent:
         if phase != "CROSS_EX_ANSWER":
             query = self._generate_search_query(claim, phase)
             # --- DEBUG PRINT ---
-            print(f"\n[DEBUG] {self.name} Search Query: '{query}'")
+            # print(f"\n[DEBUG] {self.name} Search Query: '{query}'")
             # -------------------
-            raw_evidence = self.retriever.retrieve(query) 
-            trusted_evidence = self.librarian.filter_evidence(raw_evidence, claim_context=claim)
-
-            # --- DEBUG PRINT ---
-            print(f"[DEBUG] Evidence Found: {len(trusted_evidence)} docs")
-            # -------------------
+            try:
+                raw_evidence = self.retriever.retrieve(query) 
+                trusted_evidence = self.librarian.filter_evidence(raw_evidence, claim_context=claim)
+                # --- DEBUG PRINT ---
+                # print(f"[DEBUG] Evidence Found: {len(trusted_evidence)} docs")
+                # -------------------
+            except Exception as e:
+                # Fallback if search fails (e.g. rate limits)
+                trusted_evidence = []
         else:
             trusted_evidence = [] # Rely on memory/logic for answers
 
@@ -108,7 +112,16 @@ class DebaterAgent:
         else:
             instruction = f"Start strong. {strategy}"
 
-        full_prompt = f"{system_part}\n\n{context_part}\nINSTRUCTION: {instruction}\n\nRESPONSE:"
+        full_prompt = f"{system_part}\n\n{context_part}\nINSTRUCTION: {instruction}"
+
+        # --- NEW: MODERATOR REINFORCEMENT ---
+        # If the Moderator gave a warning, we append it as a strict constraint.
+        if moderator_instruction:
+            full_prompt += f"\n\n🚨 JUDGE'S ORDER: {moderator_instruction}"
+            full_prompt += "\n(You MUST obey this order or you will lose the debate immediately.)"
+        # ------------------------------------
+
+        full_prompt += "\n\nRESPONSE:"
 
         # 5. Generate
         # Use fewer tokens for Cross-Ex to keep it punchy

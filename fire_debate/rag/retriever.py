@@ -1,10 +1,19 @@
 import os
 import uuid
+import time
 import numpy as np
 from typing import List, Dict, Any
 
 # Database & Search
 from tavily import TavilyClient
+# --- NEW IMPORT: DuckDuckGo ---
+try:
+    from duckduckgo_search import DDGS
+    HAS_DDG = True
+except ImportError:
+    HAS_DDG = False
+    print("⚠️ Warning: 'duckduckgo-search' not installed. Fallback will be disabled.")
+
 import chromadb
 from chromadb.utils import embedding_functions
 
@@ -15,12 +24,24 @@ from rank_bm25 import BM25Okapi
 class EvidenceRetriever:
     def __init__(self, config):
         self.cfg = config['retrieval']
+        tavily_cfg = config.get('tavily', {})
         
-        # 1. Tavily Setup
-        key = config.get('tavily', {}).get('api_key')
-        if not key: 
+        # --- 1. Tavily Setup (Multi-Key Support) ---
+        # Supports both single 'api_key' and list 'api_keys'
+        self.api_keys = tavily_cfg.get('api_keys', [])
+        if not self.api_keys and 'api_key' in tavily_cfg:
+            self.api_keys = [tavily_cfg['api_key']]
+            
+        # Fallback to env var
+        if not self.api_keys:
+            env_key = os.getenv("TAVILY_API_KEY")
+            if env_key: self.api_keys = [env_key]
+
+        if not self.api_keys: 
             raise ValueError("❌ Missing Tavily API Key in config!")
-        self.tavily = TavilyClient(api_key=key)
+        
+        self.current_key_idx = 0
+        self.tavily = self._get_client()
         
         # 2. Embedder Setup (BGE-Small)
         print(f"📚 Loading Embedder: {self.cfg['embedding_model']}")
@@ -39,6 +60,22 @@ class EvidenceRetriever:
         # 4. Database Setup
         self.client = chromadb.PersistentClient(path=self.cfg['db_path'])
         self.clear_cache()
+
+    def _get_client(self):
+        """Initializes client with the current active key."""
+        key = self.api_keys[self.current_key_idx]
+        return TavilyClient(api_key=key)
+
+    def _rotate_key(self):
+        """Switches to the next available API key."""
+        if len(self.api_keys) <= 1:
+            # print(f"⚠️ Warning: Only 1 Tavily key available. Cannot rotate.")
+            return False
+            
+        self.current_key_idx = (self.current_key_idx + 1) % len(self.api_keys)
+        print(f"🔄 Rotating Tavily Key -> Now using Key #{self.current_key_idx + 1}")
+        self.tavily = self._get_client()
+        return True
 
     def clear_cache(self):
         """Wipes the vector DB."""
@@ -71,21 +108,60 @@ class EvidenceRetriever:
 
     def search_web(self, query: str) -> List[Dict[str, Any]]:
         docs = []
-        try:
-            res = self.tavily.search(query=query, search_depth="basic", max_results=5)
-            for r in res.get('results', []):
-                docs.append({
-                    'doc_id': str(uuid.uuid4())[:8],
-                    'url': r.get('url'),
-                    'source': r.get('url'),
-                    'title': r.get('title'),
-                    'content': r.get('content'),
-                    'text': r.get('content'),
-                    'score': float(r.get('score', 0.8)) # Force Float
-                })
-            self.log_retrieval(f"WEB SEARCH: {query}", docs)
-        except Exception as e:
-            print(f"   ❌ Tavily Error: {e}")
+        
+        # --- PHASE A: TAVILY (With Key Rotation) ---
+        max_retries = len(self.api_keys) + 1
+        
+        for attempt in range(max_retries):
+            try:
+                res = self.tavily.search(query=query, search_depth="basic", max_results=5)
+                for r in res.get('results', []):
+                    docs.append({
+                        'doc_id': str(uuid.uuid4())[:8],
+                        'url': r.get('url'),
+                        'source': r.get('url'),
+                        'title': r.get('title'),
+                        'content': r.get('content'),
+                        'text': r.get('content'),
+                        'score': float(r.get('score', 0.8)) # Force Float
+                    })
+                self.log_retrieval(f"WEB SEARCH (Tavily): {query}", docs)
+                return docs # Success! Return immediately.
+                
+            except Exception as e:
+                error_msg = str(e).lower()
+                # Check for Rate Limit (429) or Quota issues
+                if "429" in error_msg or "quota" in error_msg or "limit" in error_msg:
+                    print(f"🛑 Key #{self.current_key_idx + 1} Hit Limit! ({e})")
+                    switched = self._rotate_key()
+                    if not switched:
+                        break # Stop trying Tavily if we can't switch
+                else:
+                    # Random network error, wait briefly
+                    time.sleep(1)
+
+        # --- PHASE B: DUCKDUCKGO (Free Fallback) ---
+        if HAS_DDG:
+            try:
+                print(f"🦆 Switching to DuckDuckGo Fallback for: '{query}'...")
+                ddg_results = DDGS().text(query, max_results=4)
+                if ddg_results:
+                    for r in ddg_results:
+                        docs.append({
+                            'doc_id': str(uuid.uuid4())[:8],
+                            'url': r.get('href'),        # DDG uses 'href'
+                            'source': r.get('href'),
+                            'title': r.get('title'),
+                            'content': r.get('body'),    # DDG uses 'body'
+                            'text': r.get('body'),
+                            'score': 0.7                 # slightly lower confidence for free search
+                        })
+                    self.log_retrieval(f"WEB SEARCH (DDG): {query}", docs)
+                    return docs
+            except Exception as e:
+                print(f"   ⚠️ DDG Fallback failed: {e}")
+
+        print("❌ All Search Methods Failed.")
         return docs
 
     def index_documents(self, docs: List[Dict[str, Any]]):

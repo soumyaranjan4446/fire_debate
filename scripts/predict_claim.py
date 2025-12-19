@@ -28,6 +28,7 @@ if project_root not in sys.path:
 
 # --- Imports ---
 from fire_debate.agents.local_client import LocalHFClient
+from fire_debate.agents.openai_client import OpenAIClient  # <--- Added Import
 from fire_debate.agents.debater import DebaterAgent, AgentConfig
 from fire_debate.agents.librarian import Librarian
 from fire_debate.rag.retriever import EvidenceRetriever
@@ -47,14 +48,8 @@ def print_slow(text, delay=0.005, color=Colors.ENDC):
     sys.stdout.write(Colors.ENDC + '\n')
 
 def print_header(title):
-    """
-    Prints a clean, boxed header. 
-    Note: We rely on top/bottom bars only for the text line to avoid 
-    misalignment caused by Emoji widths (which vary by terminal).
-    """
     width = 70
     print(f"\n{Colors.BOLD}{Colors.HEADER}╔{'═'*width}╗{Colors.ENDC}")
-    # We pad with spaces manually to ensure centering looks good even with emojis
     print(f"{Colors.BOLD}{Colors.HEADER}║{title.center(width)}║{Colors.ENDC}") 
     print(f"{Colors.BOLD}{Colors.HEADER}╚{'═'*width}╝{Colors.ENDC}\n")
 
@@ -85,8 +80,24 @@ def predict(user_claim, ground_truth=None):
         cfg = yaml.safe_load(f)
 
     print(f"\n{Colors.BOLD}⚙️  SYSTEM INITIALIZATION:{Colors.ENDC}")
-    print(f"   [1/4] Loading LLM Engine (7B Quantized)... {Colors.GREEN}✔{Colors.ENDC}")
-    llm = LocalHFClient(cfg)
+    
+    # --- DYNAMIC CLIENT LOADING ---
+    llm_type = cfg.get('llm', {}).get('type', 'local')
+    model_id = cfg.get('llm', {}).get('model_id', 'Unknown')
+    
+    print(f"   [1/4] Loading LLM Engine ({llm_type.upper()}: {model_id})...")
+    
+    try:
+        if llm_type == "openai":
+            llm = OpenAIClient(cfg)
+            print(f"         {Colors.GREEN}✔ Connected to OpenAI API{Colors.ENDC}")
+        else:
+            llm = LocalHFClient(cfg)
+            print(f"         {Colors.GREEN}✔ Loaded Local Model (GPU){Colors.ENDC}")
+    except Exception as e:
+        print(f"         {Colors.RED}❌ Failed to load LLM: {e}{Colors.ENDC}")
+        return
+    # ------------------------------
     
     print(f"   [2/4] Waking Retriever & Librarian...    {Colors.GREEN}✔{Colors.ENDC}")
     retriever = EvidenceRetriever(cfg)
@@ -124,14 +135,12 @@ def predict(user_claim, ground_truth=None):
         phase_raw = getattr(turn, 'phase', "ARGUMENT")
         if phase_raw != current_phase:
             current_phase = phase_raw
-            # Print a distinct phase header
             print(f"\n{Colors.BOLD}{Colors.HEADER}>>> PHASE: {current_phase}{Colors.ENDC}\n")
 
         # Assign Icons and Colors
         if turn.agent_name == "Moderator":
             icon = "👨‍⚖️ [MODERATOR]"
             color = Colors.YELLOW
-            # Indent Moderator slightly to stand out from debaters
             indent = "   "
         elif turn.stance == "PRO":
             icon = "🔵 [ALICE - PRO]"
@@ -140,8 +149,6 @@ def predict(user_claim, ground_truth=None):
         elif turn.stance == "CON":
             icon = "🔴 [BOB - CON]"
             color = Colors.RED
-            # FIXED: Removed the large gap here. 
-            # Bob now aligns left, distinguished by Red color.
             indent = "" 
         else:
             icon = "⚪ [SYSTEM]"
@@ -177,7 +184,13 @@ def predict(user_claim, ground_truth=None):
     print(f"\n{Colors.BOLD}>>> Consulting HGT Judge...{Colors.ENDC}")
     
     graph = graph.to(device)
-    metadata = graph.metadata()
+    
+    # Metadata Check
+    if hasattr(graph, 'metadata'):
+        metadata = graph.metadata()
+    else:
+        # Fallback for older PyG versions or empty graphs
+        metadata = (list(graph.x_dict.keys()), list(graph.edge_index_dict.keys()))
     
     # Safety Check: Input Dimension
     if not graph.x_dict:
@@ -237,7 +250,6 @@ def predict(user_claim, ground_truth=None):
     print(f"{Colors.BOLD}{Colors.HEADER}║{'FINAL JUDGEMENT'.center(70)}║{Colors.ENDC}")
     print(f"{Colors.BOLD}{Colors.HEADER}╠{'═'*70}╣{Colors.ENDC}")
     
-    # Manually pad the verdict/confidence strings to ensure the box aligns perfectly
     verdict_line = f"║  VERDICT:     {verdict_color}{Colors.BOLD}{verdict_str.ljust(54)}{Colors.ENDC} ║"
     conf_line    = f"║  CONFIDENCE:  {Colors.CYAN}{f'{confidence:.2%}'.ljust(54)}{Colors.ENDC} ║"
     

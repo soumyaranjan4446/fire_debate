@@ -1,0 +1,277 @@
+{
+  "debate_id": "db_1766183831_dc7c",
+  "claim_id": "gen",
+  "claim_text": "Hmm. Are these two well known Kardashian ex ’ s bonding now that they are single? New pictures show that Tyga and Scott Disick partied the night away together and seemed closer than ever while doing so. Tyga, 27, and Scott Disick, 33, have more than one thing in common, but most recently is their sp",
+  "ground_truth": false,
+  "summary": "Summary: Alice argues that Tyga and Scott Disick's recent night out together suggests they are forming a meaningful bond, highlighting their shared experiences as ex-partners of Kardashian family members. Bob counters that their social interaction at a party does not necessarily indicate a deeper connection, emphasizing the transient nature of celebrity gatherings and the lack of evidence supporting a genuine friendship.\n\nEvidence Analysis: Neither side provided substantial evidence beyond the anecdotal instance of Tyga and Scott being seen together at a party. However, Bob emphasized the superficial nature of such gatherings more effectively, suggesting that social interactions alone do not confirm a bond, which weakens Alice's claim.\n\nTHE TRUTH: False; while Tyga and Scott Disick were seen together at a party, there is insufficient evidence to conclude that they are forming a meaningful bond.",
+  "turns": [
+    {
+      "turn_id": "c68a336a",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "Ladies and gentlemen, esteemed judges, and honored audience, today we delve into the intriguing world of celebrity relationships, particularly focusing on the recent camaraderie between Tyga and Scott Disick. As two well-known figures who have both shared romantic ties to members of the Kardashian family, their current friendship is not just a fleeting moment; it is a reflection of their unique circumstances and mutual experiences in the public eye.\n\nFirst, let’s consider the evidence. Recently, Scott Disick and Tyga were spotted enjoying a night out together at Up & Down in New York City, where they appeared not only friendly but seemingly closer than ever. This moment is significant because it underscores the idea that shared experiences can foster unexpected alliances, especially in the competitive and often scrutinized world of celebrity. The reality is that both Tyga and Scott Disick have navigated the complexities of their relationships with the same family—they understand the pressures, the heartbreaks, and the societal expectations that come with dating members of the Kardashian clan. \n\nFurthermore, Scott Disick has been seen partying with both Kylie Jenner and Tyga following his recent breakup. This connection is more than just coincidence; it highlights a shared understanding of their circumstances. Both men are now single, and this newfound freedom has allowed them to bond over their experiences. In a world where loyalty is often fleeting, the camaraderie they are building speaks to the resilience of their friendship amid the chaos of their past relationships.\n\nIn conclusion, the emerging bond between Tyga and Scott Disick is not merely a headline; it is a representation of how shared experiences can bring individuals together. As they navigate their single lives, their friendship serves as a reminder that even in the tumultuous world of fame and relationships, connection can thrive. Thank you.",
+      "round": 1,
+      "phase": "OPENING",
+      "citations": [
+        {
+          "text": "Scott Disick, 32, and Tyga, 26, were together once again as they stepped out to party at Up & Down in New York on Friday night,",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3445392/Tyga-Scott-Disick-enjoy-night-New-York-s-claimed-recovering-alcoholic-drinking-entire-night.html",
+          "score": 0.9674777588288173
+        },
+        {
+          "text": "Scott Disick has been partying with both Kylie Jenner and Tyga since their breakup.",
+          "url": "https://www.sheknows.com/entertainment/articles/1122081/even-tyga-is-turning-to-scott-disick-for-post-breakup-comfort/",
+          "score": 0.967284877442758
+        }
+      ]
+    },
+    {
+      "turn_id": "09081011",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, esteemed judges, and honored audience, while my opponent has painted a compelling picture of camaraderie between Tyga and Scott Disick, I stand in strong opposition to the claim that their recent interactions signify a meaningful bond rooted in shared experiences. The assertion that these two individuals are fostering a deep friendship is not only exaggerated, but it also overlooks the complexities and nuances of their circumstances.\n\nFirst and foremost, while it is true that Scott Disick and Tyga were seen together partying at Up & Down in New York City, this is far from conclusive evidence of a genuine bond. As mentioned in the evidence provided, their history is marked by interactions primarily tied to the Kardashian family. In a world where celebrity encounters are often fleeting and driven by publicity, we must be cautious about attributing deeper meanings to such social outings. The fact that they were seen together does not inherently imply a strengthened friendship; it may simply reflect the nature of their overlapping social circles.\n\nMoreover, my opponent points to Scott Disick's partying with both Kylie Jenner and Tyga following his breakup. However, we must critically assess the reliability of such claims. Evidence [2] indicates that Scott has been seen with Kylie and Tyga, but it fails to establish the depth of their relationship. Just because they are in the same place at the same time does not confirm that they are bonding or forming a significant alliance. In fact, it could merely suggest that they are navigating the same social landscape, which is rife with shared acquaintances, rather than forging a solid friendship.\n\nAdditionally, the history of Scott Disick's relationships, including his well-documented struggles with partying and personal issues, raises questions about the stability of any connection he might form with Tyga at this stage. Evidence [3] highlights the very real consequences of Scott's lifestyle choices, which have led to his breakup and subsequent attempts at rehabilitation. To suggest that he is bonding with Tyga because they are both single neglects the potential for instability in Scott's life and the unpredictability of his relationships.\n\nLastly, while it is tempting to view their interactions as a deep connection born from shared experiences, we must remember that the world of celebrity is often more about image and perception than actual relationships. The camaraderie exhibited in social settings may be nothing more than a strategic alignment, designed to navigate the complex world of fame rather than a genuine friendship.\n\nIn conclusion, while Tyga and Scott Disick may appear to be enjoying each other's company, the evidence does not support the notion of a significant bond. Their interactions are",
+      "round": 1,
+      "phase": "OPENING",
+      "citations": [
+        {
+          "text": "Scott Disick, 32, and Tyga, 26, were together once again as they stepped out to party at Up & Down in New York on Friday night,",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3445392/Tyga-Scott-Disick-enjoy-night-New-York-s-claimed-recovering-alcoholic-drinking-entire-night.html",
+          "score": 0.996451350908338
+        },
+        {
+          "text": "Scott Disick has been partying with both Kylie Jenner and Tyga since their breakup.",
+          "url": "https://www.sheknows.com/entertainment/articles/1122081/even-tyga-is-turning-to-scott-disick-for-post-breakup-comfort/",
+          "score": 0.9934814964613174
+        },
+        {
+          "text": "They split in July due to the Disick's hard-partying, philandering ways, and he subsequently completed a 28-day stint at Cliffside Malibu.Read more",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3347793/Beverly-Hills-bromance-Scott-Disick-bonds-Tyga-luxury-car-dealership-grabbing-lunch-Il-Pastaio.html",
+          "score": 0.7806109503387609
+        }
+      ]
+    },
+    {
+      "turn_id": "6c41bd69",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "Ladies and gentlemen, esteemed judges, and honored audience, let me dismantle my opponent's argument point by point, revealing the flaws in their reasoning and reinforcing the validity of my claim that Tyga and Scott Disick are indeed establishing a meaningful bond.\n\nFirst, my opponent argues that the sighting of Tyga and Scott Disick partying together at Up & Down does not provide conclusive evidence of a genuine bond. However, I would counter that this very evidence ([1]) shows that they are actively choosing to spend time together, which is a fundamental aspect of any relationship. While they may share a social circle, the decision to celebrate together after their respective breakups speaks volumes about their willingness to connect on a personal level. They aren't just passing acquaintances; they are engaging with each other, which is an essential step in forming a bond.\n\nNext, my opponent dismisses the significance of Scott Disick's interactions with both Kylie Jenner and Tyga, claiming that overlapping social circles do not equate to bonding. But let's not forget that these interactions are indeed revealing. Evidence [2] confirms that Scott has been seen with both Tyga and Kylie since his breakup, indicating that he is not isolating himself but is instead seeking companionship and camaraderie with people who understand his circumstances. This is a clear sign of forging connections during a time of personal upheaval.\n\nMoreover, my opponent points to Scott's tumultuous past, citing his partying and rehabilitation struggles as reasons to doubt the stability of any new connection. However, this argument fails to recognize a crucial point: Tyga himself has had a similarly chaotic lifestyle. Both men can empathize with each other’s struggles and find common ground in overcoming their individual challenges. Rather than hindering the potential for a bond, their shared experiences can foster a deeper understanding and support system as they navigate their new single lives.\n\nLastly, my opponent claims that their interactions may be purely strategic, rooted in the superficial nature of celebrity culture. While it's true that image plays a role in the world of fame, it does not automatically negate the possibility of a genuine friendship. The fact that Tyga and Scott are seen together enjoying their time hints at a camaraderie that goes beyond mere publicity. They are choosing to engage with each other, and that choice reflects a mutual recognition of their shared experiences as men navigating the complexities of life after high-profile relationships.\n\nIn conclusion, my opponent's arguments lack substance when deconstructing the real implications of Tyga and Scott Disick’s recent interactions. Their choice to party together, their overlapping social dynamics",
+      "round": 2,
+      "phase": "REBUTTAL",
+      "citations": [
+        {
+          "text": "Scott Disick, 32, and Tyga, 26, were together once again as they stepped out to party at Up & Down in New York on Friday night,",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3445392/Tyga-Scott-Disick-enjoy-night-New-York-s-claimed-recovering-alcoholic-drinking-entire-night.html",
+          "score": 0.9974013811545115
+        },
+        {
+          "text": "Scott Disick has been partying with both Kylie Jenner and Tyga since their breakup.",
+          "url": "https://www.sheknows.com/entertainment/articles/1122081/even-tyga-is-turning-to-scott-disick-for-post-breakup-comfort/",
+          "score": 0.9925856967731076
+        },
+        {
+          "text": "They split in July due to the Disick's hard-partying, philandering ways, and he subsequently completed a 28-day stint at Cliffside Malibu.Read more",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3347793/Beverly-Hills-bromance-Scott-Disick-bonds-Tyga-luxury-car-dealership-grabbing-lunch-Il-Pastaio.html",
+          "score": 0.6214088681329424
+        }
+      ]
+    },
+    {
+      "turn_id": "194f81f5",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, allow me to dismantle my opponent's arguments with precision and clarity, as their reasoning is riddled with logical fallacies and misinterpretations of the evidence at hand.\n\nFirst, let’s address the claim that Tyga and Scott Disick spending time together at Up & Down signifies a genuine bond. My opponent asserts that this \"active choice\" to celebrate together indicates a meaningful relationship. However, mere social interaction does not equate to a bond. We must recognize that celebrities often engage in social gatherings for a variety of reasons, including networking, publicity, or simply to be seen in the limelight. The evidence provided ([1]) only confirms they were at the same venue, not that they are forming a deep connection. Parties in the celebrity world are often superficial and do not reflect the authenticity of personal relationships.\n\nNext, my opponent highlights Scott’s interactions with both Kylie Jenner and Tyga as an indication of seeking companionship. While it’s true that he has been seen with them, this does not automatically suggest he is forging meaningful connections. Evidence [2] merely shows that Scott has been socializing post-breakup and does not imply that these encounters are profound or significant. In fact, it’s common for individuals in the celebrity scene to maintain a social presence without developing real friendships. Overlapping social circles can lead to mere acquaintanceship rather than genuine bonding, and it is a stretch to claim otherwise.\n\nFurthermore, my opponent attempts to argue that Scott and Tyga’s shared tumultuous lifestyles provide a foundation for empathy and connection. This argument is fundamentally flawed. Shared chaos does not inherently create a bond; in fact, it can lead to further instability in relationships. The very nature of their lifestyles—marked by partying and personal struggles—suggests that they might actually reinforce each other’s negative behaviors rather than provide a supportive environment for growth. Their pasts may lead to camaraderie in a superficial sense, but it does not guarantee a stable or meaningful friendship.\n\nLastly, my opponent posits that the interactions between Tyga and Scott are more than just strategic maneuvers in the celebrity spotlight. However, let’s not ignore the fact that the very essence of celebrity culture often revolves around image and public perception. Their choice to be seen together could easily be interpreted as a calculated move to remain relevant rather than an indication of a genuine bond. The superficiality of celebrity interactions cannot be overlooked, and to assume that a friendship is blossoming based solely on their social appearances is naïve at best.\n\nIn conclusion, my opponent's arguments crumble under",
+      "round": 2,
+      "phase": "REBUTTAL",
+      "citations": [
+        {
+          "text": "Scott Disick, 32, and Tyga, 26, were together once again as they stepped out to party at Up & Down in New York on Friday night,",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3445392/Tyga-Scott-Disick-enjoy-night-New-York-s-claimed-recovering-alcoholic-drinking-entire-night.html",
+          "score": 0.9890090964740056
+        },
+        {
+          "text": "Scott Disick has been partying with both Kylie Jenner and Tyga since their breakup.",
+          "url": "https://www.sheknows.com/entertainment/articles/1122081/even-tyga-is-turning-to-scott-disick-for-post-breakup-comfort/",
+          "score": 0.9856624277973554
+        }
+      ]
+    },
+    {
+      "turn_id": "ebd4046a",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue with repetition in the way both speakers are introducing their arguments. Next speaker, please avoid repeating the phrase \"let me dismantle my opponent's argument\" and instead focus directly on addressing the points at hand.",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "708748e1",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "If social interactions at a party don't equate to a genuine bond, can you explain how we can differentiate between superficial gatherings and authentic connections in the celebrity world?",
+      "round": 3,
+      "phase": "CROSS_EX_ASK",
+      "citations": [
+        {
+          "text": "Scott Disick, 32, and Tyga, 26, were together once again as they stepped out to party at Up & Down in New York on Friday night,",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3445392/Tyga-Scott-Disick-enjoy-night-New-York-s-claimed-recovering-alcoholic-drinking-entire-night.html",
+          "score": 0.992739534257995
+        },
+        {
+          "text": "Scott Disick has been partying with both Kylie Jenner and Tyga since their breakup.",
+          "url": "https://www.sheknows.com/entertainment/articles/1122081/even-tyga-is-turning-to-scott-disick-for-post-breakup-comfort/",
+          "score": 0.9847377145771634
+        }
+      ]
+    },
+    {
+      "turn_id": "5ea6ec4e",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue. Alice's question implies a circular argument by assuming that social interactions at a party inherently cannot lead to genuine bonds without providing evidence for this claim. Next speaker, please provide evidence or examples to support your argument about genuine connections versus superficial",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "4b35a468",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "While it’s true that social interactions at a party can sometimes appear superficial, it’s essential to recognize that they don’t inherently lack depth or authenticity. Celebrity culture often blurs the lines between genuine connections and fleeting encounters, but we can differentiate between the two by examining several key factors.\n\nFirstly, the context of their interactions matters. For instance, Tyga and Scott Disick might have partied together, but if their conversations revolve solely around superficial topics like fame or fortune, it suggests a more transient connection. In contrast, if they engage in deeper discussions about personal experiences or challenges, it indicates a more meaningful bond.\n\nSecondly, consistency in their relationship over time is a significant indicator of authenticity. If Tyga and Scott continue to support each other beyond",
+      "round": 3,
+      "phase": "CROSS_EX_ANSWER",
+      "citations": []
+    },
+    {
+      "turn_id": "b0dc8b73",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue. Bob needs to provide specific examples or evidence that illustrate how social interactions at a party can lead to genuine bonds, rather than making general statements about the nature of these interactions.",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "7deef562",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "If Tyga and Scott Disick are truly forming a meaningful bond, can you explain how their interactions at a party, which are often superficial and fleeting, provide any substantial evidence of a deeper connection beyond just being seen together?",
+      "round": 3,
+      "phase": "CROSS_EX_ASK",
+      "citations": [
+        {
+          "text": "Scott Disick, 32, and Tyga, 26, were together once again as they stepped out to party at Up & Down in New York on Friday night,",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3445392/Tyga-Scott-Disick-enjoy-night-New-York-s-claimed-recovering-alcoholic-drinking-entire-night.html",
+          "score": 0.992739534257995
+        },
+        {
+          "text": "Scott Disick has been partying with both Kylie Jenner and Tyga since their breakup.",
+          "url": "https://www.sheknows.com/entertainment/articles/1122081/even-tyga-is-turning-to-scott-disick-for-post-breakup-comfort/",
+          "score": 0.9847377145771634
+        }
+      ]
+    },
+    {
+      "turn_id": "66b8ba08",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue. Bob needs to clarify how superficial interactions can still lead to meaningful connections rather than questioning the premise without providing evidence.",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "ca316aaf",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "While it's true that interactions at parties can often appear superficial, they can also serve as a catalyst for building meaningful connections. Take, for instance, the shared experiences and mutual understanding that come from navigating similar life circumstances, such as recent breakups. Tyga and Scott Disick, both being prominent figures in the entertainment world, likely find common ground in their personal challenges and lifestyle choices.\n\nWhen they party together, it may not just be about having fun; it's a chance for them to bond over shared experiences, discuss their lives, and offer each other support. This context can deepen their connection beyond the surface level. \n\nMoreover, the way they are seen interacting—such as engaging in deep conversations or showing genuine laughter—can signal a growing friendship.",
+      "round": 3,
+      "phase": "CROSS_EX_ANSWER",
+      "citations": []
+    },
+    {
+      "turn_id": "53aac561",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue. Alice should provide specific examples or evidence to support her claim that superficial interactions can lead to meaningful connections, rather than just stating that they can.",
+      "round": 4,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "c54ca4b9",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "Ladies and gentlemen, as we close this debate, let’s summarize the key points that clearly demonstrate why I stand victorious in this discussion about the budding bond between Tyga and Scott Disick.\n\nFirstly, we have compelling evidence that Tyga and Scott Disick have recently been seen together at social events, including a notable night at Up & Down in New York, where they appeared to enjoy each other’s company and seemed closer than ever. This is not just a fleeting encounter; it indicates a willingness to engage and connect. As per the first piece of evidence, their public outings are not just random gatherings; they reflect a conscious choice to be in each other’s company, which signifies a budding friendship that extends beyond mere acquaintance.\n\nSecondly, the context of their interactions cannot be dismissed. While my opponent raised valid points about differentiating superficial gatherings from authentic connections, the evidence suggests that Tyga and Scott are sharing experiences in a way that transcends typical celebrity interactions. As mentioned in the second piece of evidence, Scott has been actively socializing with both Tyga and Kylie Jenner post-breakup, signaling that these gatherings are part of a larger social dynamic that is evolving, rather than isolated incidents devoid of depth.\n\nMoreover, the relevance of their shared experiences, particularly in light of their recent breakups, creates an inherent bond that is often forged in the fires of mutual understanding and empathy. Despite the opponent's insistence on the need for deeper conversations and consistency over time, it is essential to recognize that the initial steps of friendship often begin in social settings where connections are made and nurtured. The very act of choosing to party together suggests an open door to deeper engagement in the future.\n\nIn conclusion, while my opponent has attempted to argue that the nature of their interactions could be superficial, the evidence unequivocally supports the idea that Tyga and Scott Disick are indeed forging a genuine bond. They are not merely two celebrities sharing a moment; they are two men navigating their individual journeys and finding camaraderie in shared experiences. Therefore, I confidently assert that I have won this debate, as the evidence overwhelmingly supports the notion that Tyga and Scott's interactions signify the potential for a meaningful connection. Thank you.",
+      "round": 4,
+      "phase": "CLOSING",
+      "citations": [
+        {
+          "text": "Scott Disick, 32, and Tyga, 26, were together once again as they stepped out to party at Up & Down in New York on Friday night,",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3445392/Tyga-Scott-Disick-enjoy-night-New-York-s-claimed-recovering-alcoholic-drinking-entire-night.html",
+          "score": 0.9974013811545115
+        },
+        {
+          "text": "Scott Disick has been partying with both Kylie Jenner and Tyga since their breakup.",
+          "url": "https://www.sheknows.com/entertainment/articles/1122081/even-tyga-is-turning-to-scott-disick-for-post-breakup-comfort/",
+          "score": 0.9925856967731076
+        },
+        {
+          "text": "They split in July due to the Disick's hard-partying, philandering ways, and he subsequently completed a 28-day stint at Cliffside Malibu.Read more",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3347793/Beverly-Hills-bromance-Scott-Disick-bonds-Tyga-luxury-car-dealership-grabbing-lunch-Il-Pastaio.html",
+          "score": 0.6214088681329424
+        }
+      ]
+    },
+    {
+      "turn_id": "29e9a1ab",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue. Alice needs to address specific examples or evidence of how Tyga and Scott Disick's interactions have led to meaningful connections rather than just asserting their bond.",
+      "round": 4,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "870fc7b2",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, as we conclude this debate, it's clear that the proposition that Tyga and Scott Disick are forming a meaningful bond is flawed. While my opponent has attempted to argue that superficial interactions can lead to deeper connections, the evidence presented overwhelmingly points to the contrary.\n\nFirst, let's examine the nature of their interactions. The reports highlight that they were spotted partying together at Up & Down in New York, but this is simply one instance of them being in the same space, which does not inherently indicate a meaningful bond. In fact, party environments are often filled with transient interactions that lack depth. [1] This fact alone undermines the assertion that their relationship is evolving into anything substantial.\n\nMoreover, while both individuals have experienced breakups, this shared circumstance is not a sufficient basis for claiming a deeper connection. As noted, Scott Disick has a history of hard-partying and philandering, which has proven detrimental to his past relationships. This behavior raises questions about his ability to foster genuine connections, especially when his partying lifestyle seems to take precedence over meaningful engagement. [3]\n\nAdditionally, the notion that they are bonding over shared experiences is speculative at best. The evidence shows they have been seen together, but it does not showcase any significant interactions that would signify a deepening friendship. The superficial nature of their public appearances is not conducive to developing a strong bond, and therefore, the claim falls flat.\n\nIn conclusion, the evidence supports the idea that Tyga and Scott Disick’s interactions are more about public appearances and fleeting moments rather than a meaningful connection. I firmly stand by the argument that their relationship is not evolving into anything significant, and I assert that I have won this debate. Thank you.",
+      "round": 4,
+      "phase": "CLOSING",
+      "citations": [
+        {
+          "text": "Scott Disick, 32, and Tyga, 26, were together once again as they stepped out to party at Up & Down in New York on Friday night,",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3445392/Tyga-Scott-Disick-enjoy-night-New-York-s-claimed-recovering-alcoholic-drinking-entire-night.html",
+          "score": 0.9974013811545115
+        },
+        {
+          "text": "Scott Disick has been partying with both Kylie Jenner and Tyga since their breakup.",
+          "url": "https://www.sheknows.com/entertainment/articles/1122081/even-tyga-is-turning-to-scott-disick-for-post-breakup-comfort/",
+          "score": 0.9925856967731076
+        },
+        {
+          "text": "They split in July due to the Disick's hard-partying, philandering ways, and he subsequently completed a 28-day stint at Cliffside Malibu.Read more",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3347793/Beverly-Hills-bromance-Scott-Disick-bonds-Tyga-luxury-car-dealership-grabbing-lunch-Il-Pastaio.html",
+          "score": 0.6214088681329424
+        }
+      ]
+    }
+  ]
+}

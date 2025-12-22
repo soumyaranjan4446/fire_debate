@@ -1,0 +1,272 @@
+{
+  "debate_id": "db_1766215702_f458",
+  "claim_id": "gen",
+  "claim_text": "Jessica Simpson and Ashlee Simpson have been immortalized in the fine arts. The songstress sisters acted as muses – and models — in dad Joe Simpson ’ s first art show titled “ Dreams Work, ” which showcases the former music manager ’ s collection of original photographs. While sipping from flutes of",
+  "ground_truth": false,
+  "summary": "Summary: Alice (PRO) argues that Jessica and Ashlee Simpson have been immortalized in fine arts through their father's art show, \"Dreams Work,\" where they are featured in his photographs, highlighting their significance as artistic subjects. Bob (CON) counters that being subjects in a family collection does not qualify them for immortalization in fine arts, emphasizing that true art must possess lasting impact, critical recognition, and technical skill, which he claims Joe Simpson's photographs lack.\n\nEvidence Analysis: Neither side provided substantial external evidence or citations to support their claims; however, Alice attempted to connect the emotional impact of the photographs to cultural relevance, while Bob focused on a more traditional definition of fine art without specific examples. Overall, Alice's argument presented a more compelling narrative about the cultural impact of the photographs, despite lacking rigorous proof.\n\nTHE TRUTH: False; while Joe Simpson's photographs feature his daughters, being photographed does not equate to being immortalized in the fine arts without broader artistic recognition and impact.",
+  "turns": [
+    {
+      "turn_id": "119bb7e5",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "Ladies and gentlemen, esteemed judges, and fellow debaters, today I stand before you to assert a claim that may at first seem surprising but is undeniably true: Jessica and Ashlee Simpson have been immortalized in the fine arts. These two talented sisters have not only made their mark in the music industry but have also transcended into the realm of visual art, serving as muses and models for their father's artistic vision.\n\nFirst and foremost, let us consider the significance of their father's art show, titled “Dreams Work.” This exhibition showcases Joe Simpson's original photographs, capturing the essence and spirit of his daughters. By featuring Jessica and Ashlee as central figures in this collection, Joe has elevated their status from mere pop icons to artistic subjects worthy of admiration and study. It is not just a display of family pride; it is a celebration of their influence and the beauty they embody. Through this lens, we see that they are not merely entertainers but integral components of the creative tapestry that is fine arts.\n\nMoreover, the upcoming reunion of the Simpson sisters at the 2025 MTV VMAs only reinforces their enduring impact on popular culture and the arts. This highly anticipated event highlights their continued relevance and the collective nostalgia that surrounds their contributions to music and entertainment. Their shared stage is not just a reunion of musicians but a testament to their lasting legacy, which has inspired generations of artists and fans alike.\n\nIn conclusion, Jessica and Ashlee Simpson are more than pop stars; they are cultural icons whose essence has been immortalized in the fine arts. Their father's work showcases their significance and serves as a reminder of the profound ways in which art and family intertwine. As we reflect on their contributions, we must acknowledge that their influence is a vibrant part of our artistic heritage, deserving of recognition and appreciation. Thank you.",
+      "round": 1,
+      "phase": "OPENING",
+      "citations": [
+        {
+          "text": "Sisters Jessica and Ashlee Simpson will share the stage at the 2025 MTV VMAs, reuniting for a special appearance.",
+          "url": "https://entertainmentnow.com/reality-tv/jessica-ashlee-simpson-vmas-reunion-2025/",
+          "score": 0.3151550642123192
+        }
+      ]
+    },
+    {
+      "turn_id": "0391fdd2",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, esteemed judges, and fellow debaters, I stand before you today to challenge the assertion that Jessica and Ashlee Simpson have been immortalized in the fine arts. While it is true that they have made notable contributions to the music industry and popular culture, the claim that they have transcended into the realm of fine arts as muses and models is a misinterpretation of their significance.\n\nTo begin with, the notion that Joe Simpson’s art show, “Dreams Work,” elevates Jessica and Ashlee to the status of fine art muses is a stretch. While familial ties and personal relationships often inspire art, the mere act of being subjects in a collection of photographs does not equate to being immortalized in the fine arts. Immortalization in fine arts implies a lasting legacy that transcends personal connections and enters the broader artistic canon. Joe Simpson’s photographs may celebrate his daughters, but they do not inherently confer artistic merit or cultural significance that would qualify them as muses in the traditional sense.\n\nFurthermore, the upcoming reunion of the Simpson sisters at the 2025 MTV VMAs, although a moment of nostalgia for fans, does not solidify their status as figures within the fine arts. The reliability of the evidence from the VMAs, with ratings around 0.76 and 0.77, suggests that while there is public interest in their reunion, it is rooted in their past as entertainers rather than any artistic contribution to the visual arts. The VMAs celebrate music and performance, not visual art; thus, their participation in this context does not enhance their claim to be immortalized in fine arts.\n\nIn conclusion, while Jessica and Ashlee Simpson may be cultural icons in the realm of music and entertainment, the argument that they have been immortalized in the fine arts is fundamentally flawed. Their father's photographs, while personal and meaningful, do not elevate them to the status of fine art muses. Therefore, we must differentiate between popularity in entertainment and true artistic legacy. Thank you.",
+      "round": 1,
+      "phase": "OPENING",
+      "citations": [
+        {
+          "text": "Sisters Jessica and Ashlee Simpson will share the stage at the 2025 MTV VMAs, reuniting for a special appearance.",
+          "url": "https://entertainmentnow.com/reality-tv/jessica-ashlee-simpson-vmas-reunion-2025/",
+          "score": 0.7679528513827107
+        },
+        {
+          "text": "Jessica Simpson and sister, Ashlee Simpson Ross, presented at the MTV VMAs tonight. It's been 19 and 17 years since each attended this award",
+          "url": "https://www.reddit.com/r/Fauxmoi/comments/1nblazi/jessica_simpson_and_sister_ashlee_simpson_ross/",
+          "score": 0.7592640802305315
+        }
+      ]
+    },
+    {
+      "turn_id": "792a3896",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is some repetition in the opening statements where both speakers emphasize the contributions of Jessica and Ashlee Simpson to the music industry and popular culture. Additionally, both speakers have not yet fully addressed or provided evidence regarding the criteria for being considered \"immortalized",
+      "round": 2,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "4542b9ad",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "Ladies and gentlemen, esteemed judges, and fellow debaters, let me take a moment to thoroughly deconstruct my opponent's argument against the assertion that Jessica and Ashlee Simpson have been immortalized in the fine arts.\n\n**Point #1: Misinterpretation of Immortalization**  \nMy opponent claims that being subjects in a collection of photographs does not equate to being immortalized in fine arts. This argument is fundamentally flawed. Immortalization in art is not solely about transcending into the broader artistic canon but also about becoming part of the artistic narrative. Joe Simpson’s art show, “Dreams Work,” captures a personal and unique perspective on his daughters, thus highlighting their significance within the context of his artistic expression. To dismiss this as mere familial ties is to undermine the powerful way art can encapsulate personal stories and relationships. Art is subjective, and Joe Simpson's photographs reflect a form of artistic merit that resonates with viewers who appreciate the emotional connections conveyed through his work.\n\n**Point #2: The Role of Nostalgia in Arts**  \nWhile my opponent asserts that the upcoming reunion at the 2025 MTV VMAs does not solidify their status as figures within fine arts, they overlook the critical role nostalgia plays in art. The evidence indicates that this reunion is not merely a nostalgic trip for fans but an acknowledgment of their lasting impact on the entertainment industry. This impact spills over into the arts as the emotional resonance of their music and public personas can inspire artists in various mediums. Nostalgia is a powerful artistic tool, and the sisters’ return to the spotlight allows them to be recontextualized in the artistic discourse, further solidifying their place in the cultural narrative.\n\n**Point #3: Evidence Reliability**  \nMy opponent points to the reliability of the VMAs evidence as low (0.76 and 0.77), suggesting that it does not solidify their artistic contributions. However, this is a mischaracterization of the significance of cultural events. The VMAs are a cultural touchstone, and their involvement signifies a re-engagement with their artistic heritage. Celebrities and artists often draw inspiration from their past, and the fact that the Simpson sisters are still relevant enough to be featured in such a significant event speaks volumes about their enduring impact on popular culture, which is intrinsically linked to the arts.\n\n**Point #4: Differentiating Popularity from Artistic Legacy**  \nMy opponent concludes that we must differentiate between popularity in entertainment and true artistic legacy. However, this assertion is reductive. Popularity can indeed lead to an",
+      "round": 2,
+      "phase": "REBUTTAL",
+      "citations": [
+        {
+          "text": "Sisters Jessica and Ashlee Simpson will share the stage at the 2025 MTV VMAs, reuniting for a special appearance.",
+          "url": "https://entertainmentnow.com/reality-tv/jessica-ashlee-simpson-vmas-reunion-2025/",
+          "score": 0.7679528513827107
+        },
+        {
+          "text": "Jessica Simpson and sister, Ashlee Simpson Ross, presented at the MTV VMAs tonight. It's been 19 and 17 years since each attended this award",
+          "url": "https://www.reddit.com/r/Fauxmoi/comments/1nblazi/jessica_simpson_and_sister_ashlee_simpson_ross/",
+          "score": 0.7592640802305315
+        }
+      ]
+    },
+    {
+      "turn_id": "e0aa2652",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is repetition in the opening statements where both speakers emphasize the contributions of Jessica and Ashlee Simpson without introducing new evidence or perspectives on the criteria for immortalization. \n\n**Instruction to NEXT speaker:** Please provide a unique argument or evidence that addresses the criteria",
+      "round": 2,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "8acf1ebb",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, it's time to dismantle the flimsy assertions laid out by my opponent regarding Jessica and Ashlee Simpson's supposed immortalization in the fine arts.\n\n**Point #1: Misinterpretation of Immortalization**  \nMy opponent argues that being subjects of a family art show equates to being immortalized in fine arts. This is a gross overstatement. Immortalization in the fine arts implies a lasting impact on the artistic canon, a recognition by the broader artistic community, and an enduring influence that transcends personal narratives. Joe Simpson's photographs may showcase a personal bond, but that alone does not elevate the sisters to the status of fine art icons. What we have here is a collection of sentimental family photos, not a groundbreaking artistic statement worthy of immortalization. To conflate familial affection with artistic merit is to dilute the very essence of what fine art represents.\n\n**Point #2: The Role of Nostalgia in Arts**  \nWhile my opponent emphasizes nostalgia as a pivotal force in the arts, they fail to recognize that nostalgia does not automatically equate to artistic significance. The upcoming reunion at the 2025 MTV VMAs is indeed a nostalgic moment for fans, but nostalgia alone does not confer artistic legacy. If we take this argument to its logical conclusion, we could claim that any pop culture figure who generates a wave of nostalgia is somehow immortalized in art. That is a slippery slope. True artistic contributions should inspire new narratives, provoke thought, or challenge societal norms—not merely evoke fond memories. The emotional resonance they carry does not elevate them as muses in the fine arts.\n\n**Point #3: Evidence Reliability**  \nMy opponent attempts to bolster their claims by citing the VMAs as a cultural touchstone. However, the reliability of this evidence is questionable, with ratings of 0.84 and 0.83. It’s important to recognize that while the VMAs are indeed significant, their relevance does not translate to artistic legacy. The mere fact that the Simpsons are featured in a nostalgic event doesn’t inherently validate their status in the fine arts. It merely indicates their continued presence in pop culture—a far cry from being immortalized in art. If we apply a critical lens, we can see that their involvement in such events speaks more to their popularity than any artistic merit.\n\n**Point #4: Differentiating Popularity from Artistic Legacy**  \nMy opponent argues that popularity can lead to an artistic legacy. This is a dangerous simplification. While popularity can introduce figures to the art world, it does not guarantee a",
+      "round": 2,
+      "phase": "REBUTTAL",
+      "citations": [
+        {
+          "text": "Sisters Jessica and Ashlee Simpson will share the stage at the 2025 MTV VMAs, reuniting for a special appearance.",
+          "url": "https://entertainmentnow.com/reality-tv/jessica-ashlee-simpson-vmas-reunion-2025/",
+          "score": 0.8374102300361128
+        },
+        {
+          "text": "Jessica Simpson and sister, Ashlee Simpson Ross, presented at the MTV VMAs tonight. It's been 19 and 17 years since each attended this award",
+          "url": "https://www.reddit.com/r/Fauxmoi/comments/1nblazi/jessica_simpson_and_sister_ashlee_simpson_ross/",
+          "score": 0.8349853798233025
+        }
+      ]
+    },
+    {
+      "turn_id": "c2771f02",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue of repetition in Bob's argument, as he reiterates points about the Simpson sisters without introducing new evidence or perspectives. **Instruction to NEXT speaker:** Please present a unique argument or perspective on the criteria for immortalization that avoids reiterating",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "6cc2ff9b",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "If Joe Simpson's photographs of his daughters are merely sentimental family photos and not true works of art, how do you explain the emotional impact and cultural resonance they have had on the public, as evidenced by their ongoing relevance, such as their upcoming reunion at the 2025 MTV VMAs?",
+      "round": 3,
+      "phase": "CROSS_EX_ASK",
+      "citations": [
+        {
+          "text": "Sisters Jessica and Ashlee Simpson will share the stage at the 2025 MTV VMAs, reuniting for a special appearance.",
+          "url": "https://entertainmentnow.com/reality-tv/jessica-ashlee-simpson-vmas-reunion-2025/",
+          "score": 0.7679528513827107
+        },
+        {
+          "text": "Jessica Simpson and sister, Ashlee Simpson Ross, presented at the MTV VMAs tonight. It's been 19 and 17 years since each attended this award",
+          "url": "https://www.reddit.com/r/Fauxmoi/comments/1nblazi/jessica_simpson_and_sister_ashlee_simpson_ross/",
+          "score": 0.7592640802305315
+        }
+      ]
+    },
+    {
+      "turn_id": "79520697",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue of repetition in Alice's argument, as she reiterates points about emotional impact and cultural resonance without introducing new evidence or perspectives. **Instruction to NEXT speaker:** Please present a distinct argument that introduces new evidence or insights regarding the criteria for",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "c65f3d75",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "While it's true that Joe Simpson's photographs of his daughters may evoke strong emotional responses and have cultural relevance, this does not necessarily qualify them as fine art. The emotional impact of any photograph can stem from personal connections or nostalgia, which can be deeply felt by family and fans alike, but this does not elevate the work to the status of true artistic merit.\n\nTrue works of art typically undergo critical scrutiny and are celebrated for their aesthetic qualities, technical skill, and innovative concepts. In the case of Joe Simpson's photographs, they largely reflect personal moments rather than the complex layers of meaning and emotional depth often found in established art. The fact that Jessica and Ashlee Simpson are set to reunite at the 2025 MTV VMAs speaks more to their celebrity",
+      "round": 3,
+      "phase": "CROSS_EX_ANSWER",
+      "citations": []
+    },
+    {
+      "turn_id": "ab9257d8",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue of repetition in Bob's argument, as he reiterates the emotional impact of photographs without introducing new evidence or perspectives. **Instruction to NEXT speaker:** Please provide a distinct argument that includes new evidence or insights regarding the classification of Joe Simpson",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "8f5a37d3",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "If Joe Simpson's photographs of his daughters are a form of artistic expression, can you clarify how these personal photos compare to works by recognized fine artists in terms of technical skill and thematic depth?",
+      "round": 3,
+      "phase": "CROSS_EX_ASK",
+      "citations": [
+        {
+          "text": "Sisters Jessica and Ashlee Simpson will share the stage at the 2025 MTV VMAs, reuniting for a special appearance.",
+          "url": "https://entertainmentnow.com/reality-tv/jessica-ashlee-simpson-vmas-reunion-2025/",
+          "score": 0.7679528513827107
+        },
+        {
+          "text": "Jessica Simpson and sister, Ashlee Simpson Ross, presented at the MTV VMAs tonight. It's been 19 and 17 years since each attended this award",
+          "url": "https://www.reddit.com/r/Fauxmoi/comments/1nblazi/jessica_simpson_and_sister_ashlee_simpson_ross/",
+          "score": 0.7592640802305315
+        }
+      ]
+    },
+    {
+      "turn_id": "abf70e78",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue of circularity, as Bob's question does not introduce new evidence or perspectives and instead seeks clarification on a previously discussed point. **Instruction to NEXT speaker:** Please provide a distinct argument or evidence that addresses the classification of personal photographs versus",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "3fd7a06b",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "While it's true that personal photographs, like those of Joe Simpson's daughters, may not always match the technical skill found in the works of recognized fine artists, they still hold substantial artistic value. Personal photographs can capture genuine emotion, intimacy, and the unique narrative of familial relationships, which are integral components of art itself. \n\nIn Joe Simpson's case, his photographs of Jessica and Ashlee serve as more than just personal memories; they reflect a thematic depth rooted in family, identity, and the complexities of fame. This thematic richness can resonate with audiences on an emotional level, similar to how a fine artist communicates through their work. For example, the way he frames his daughters, the choice of lighting, and the moments he captures all demonstrate a level of",
+      "round": 3,
+      "phase": "CROSS_EX_ANSWER",
+      "citations": []
+    },
+    {
+      "turn_id": "2a2aeba9",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue of repetition in Alice's response, as she reiterates the concept of emotional value in personal photographs without introducing new evidence or perspectives. **Instruction to NEXT speaker:** Please provide a distinct argument or evidence that expands on the classification of personal",
+      "round": 4,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "f6e18311",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "As we conclude this debate, it is clear that the proposition that Jessica and Ashlee Simpson have been immortalized in the fine arts stands strong. The emotional impact of Joe Simpson's photographs transcends mere sentimentality, asserting their place as true artistic expressions. My opponent has attempted to downplay this impact by labeling the photographs as personal moments, but this argument fails to recognize the broader cultural resonance these images have achieved.\n\nThe upcoming reunion of Jessica and Ashlee Simpson at the 2025 MTV VMAs serves as a powerful testament to their enduring relevance in popular culture. This event highlights the significance of their shared experiences, not only as sisters but also as cultural icons. Their ability to evoke nostalgia and connection among fans is a critical indicator of the artistic merit of Joe Simpson's work. Art is not solely defined by technical skill or critical acclaim; it is also about the ability to resonate with audiences and evoke emotional responses.\n\nFurthermore, the photographs in question reflect a unique perspective that captures the essence of their lives, transforming the mundane into something relatable and evocative. They invite viewers to connect with the subjects on a personal level, thereby achieving the emotional depth that my opponent claims is lacking.\n\nIn essence, while my opponent may argue that these photographs do not qualify as fine art, the emotional weight and cultural significance they carry cannot be dismissed. Joe Simpson's work, through its ability to evoke nostalgia and connection, indeed elevates his photographs to the realm of fine arts. Therefore, I confidently assert that we have demonstrated the truth of our claim, and I stand victorious in this debate. Thank you.",
+      "round": 4,
+      "phase": "CLOSING",
+      "citations": [
+        {
+          "text": "Sisters Jessica and Ashlee Simpson will share the stage at the 2025 MTV VMAs, reuniting for a special appearance.",
+          "url": "https://entertainmentnow.com/reality-tv/jessica-ashlee-simpson-vmas-reunion-2025/",
+          "score": 0.7679528513827107
+        },
+        {
+          "text": "Jessica Simpson and sister, Ashlee Simpson Ross, presented at the MTV VMAs tonight. It's been 19 and 17 years since each attended this award",
+          "url": "https://www.reddit.com/r/Fauxmoi/comments/1nblazi/jessica_simpson_and_sister_ashlee_simpson_ross/",
+          "score": 0.7592640802305315
+        }
+      ]
+    },
+    {
+      "turn_id": "e7115bc0",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue of repetition in Alice's response, as she reiterates the concept of emotional impact without providing new evidence or perspectives. **Instruction to NEXT speaker:** Please introduce a new argument or evidence that expands on the classification of Joe Simpson's photographs",
+      "round": 4,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "96bbbf78",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, as we conclude this debate, it is clear that the assertion that Jessica and Ashlee Simpson have been immortalized in the fine arts through Joe Simpson's photography is fundamentally flawed. While my opponent argues that Joe's photographs possess emotional depth and thematic richness, I contend that this does not elevate them to the status of fine art.\n\nFirstly, let’s address the idea that personal photographs can hold artistic value. While it is true that they may capture genuine emotions and familial narratives, these elements alone do not equate to the technical skill and breadth of thematic exploration typically associated with recognized fine artists. Joe Simpson’s photographs, while personal and intimate, lack the rigorous artistic techniques and innovative concepts that define fine art. They are snapshots of family life, not artistic statements that challenge or expand the boundaries of visual expression.\n\nMoreover, my opponent’s emphasis on emotional impact overlooks the necessity for a broader artistic context. The art world thrives on works that provoke thought, introduce new ideas, and challenge societal norms. Joe Simpson’s photographs do not do this; instead, they present a narrow slice of life that, while heartfelt, does not contribute to the larger conversation of art. \n\nIn support of my stance, we see evidence from the upcoming 2025 MTV VMAs, where both sisters will share the stage, indicating their continued relevance in popular culture. However, this prominence does not automatically translate into artistic acclaim. Their presence at such events highlights their status as entertainers rather than fine art figures. Additionally, the fact that they have not been recognized in the fine art community speaks volumes about the distinction between celebrity and artistic merit.\n\nIn conclusion, while my opponent may argue for the emotional and thematic value of Joe Simpson's photography, it ultimately falls short of defining them as fine art. The lack of technical skill, innovative concepts, and recognition in the art community underscores this reality. Therefore, I confidently affirm that the claim of Jessica and Ashlee Simpson being immortalized in the fine arts through their father's work is indeed false. Thank you.",
+      "round": 4,
+      "phase": "CLOSING",
+      "citations": [
+        {
+          "text": "Sisters Jessica and Ashlee Simpson will share the stage at the 2025 MTV VMAs, reuniting for a special appearance.",
+          "url": "https://entertainmentnow.com/reality-tv/jessica-ashlee-simpson-vmas-reunion-2025/",
+          "score": 0.8374102300361128
+        },
+        {
+          "text": "Jessica Simpson and sister, Ashlee Simpson Ross, presented at the MTV VMAs tonight. It's been 19 and 17 years since each attended this award",
+          "url": "https://www.reddit.com/r/Fauxmoi/comments/1nblazi/jessica_simpson_and_sister_ashlee_simpson_ross/",
+          "score": 0.8349853798233025
+        }
+      ]
+    }
+  ]
+}

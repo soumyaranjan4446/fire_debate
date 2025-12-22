@@ -1,0 +1,237 @@
+{
+  "debate_id": "db_1766241646_42aa",
+  "claim_id": "gen",
+  "claim_text": "Yesterday, Kylie Jenner said she'll no longer be sharing pictures of Stormi's face, and the reason is beyond heartbreaking. An insider told People that Kylie made the decision because of the ` ` nasty'' comments she was seeing on pictures of her daughter. “ Kylie felt so protective of her baby when ",
+  "ground_truth": false,
+  "summary": "Summary: \nAlice (PRO) argues that Kylie Jenner's decision to stop sharing pictures of her daughter Stormi is a protective response to negative comments she has encountered, highlighting the emotional toll of public scrutiny on children. Bob (CON) counters that Kylie's motivations may not be purely protective, questioning the reliability of the insider's account and pointing out the inconsistency of her previous actions in sharing photos despite potential backlash.\n\nEvidence Analysis: \nAlice referenced an insider's statement reported by People, emphasizing the emotional reasoning behind Kylie's decision. Bob, on the other hand, critiqued the reliability of that source and pointed out the inconsistency in Kylie's past behavior without providing concrete evidence to support his claims. Overall, Alice's use of a specific insider quote lends her argument more credibility.\n\nTHE TRUTH: True, Kylie Jenner stated she would no longer share pictures of Stormi's face due to \"nasty\" comments, as reported by an insider to People, indicating her concern about public scrutiny.",
+  "turns": [
+    {
+      "turn_id": "79063779",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "Ladies and gentlemen, esteemed judges, and honorable opponents,\n\nToday, I stand before you to affirm a claim that resonates deeply within our modern society: Kylie Jenner's decision to no longer share pictures of her daughter Stormi's face is not just a personal choice, but a necessary statement against the toxic culture of online harassment and bullying.\n\nFirstly, let us acknowledge the emotional toll that public scrutiny can have on anyone, especially a child. An insider revealed to People that Kylie made this heart-wrenching decision in response to the \"nasty\" comments directed at her daughter. This reveals a critical truth: when public figures become parents, their children are often thrust into the spotlight, subjected to unwarranted judgment and cruelty. The fact that Kylie felt compelled to protect her baby from such negativity underscores the harsh reality of social media today. It is a place where anonymity can breed malice, and where the innocence of childhood can be overshadowed by the harshness of public opinion.\n\nSecondly, this decision highlights the responsibility that comes with fame. While many may argue that public figures should simply accept the scrutiny that comes with their status, we must ask ourselves: at what cost? Kylie's choice to shield Stormi from the vitriol of online commenters reflects a protective instinct that is paramount to parenting. It raises awareness about the need for a more compassionate online environment—one where children are not pawns in a game of likes and shares, but are instead allowed to grow up free from the burden of public judgment.\n\nIn conclusion, Kylie Jenner's decision represents a courageous stand against a culture that too often prioritizes sensationalism over sensitivity. By choosing to protect her daughter’s privacy, Kylie not only prioritizes Stormi’s well-being but also sends a powerful message that we must all heed: that our words matter, and that our shared humanity must prevail over the faceless cruelty of the internet. Thank you.",
+      "round": 1,
+      "phase": "OPENING",
+      "citations": [
+        {
+          "text": "According to People, the insider added that people were making \"nasty\" comments and that she just decided to take down any pics of Stormi's face ...Read more",
+          "url": "https://www.romper.com/p/this-could-be-why-kylie-jenner-deleted-all-her-photos-of-stormi-sadly-it-makes-complete-sense-9377445",
+          "score": 0.7615977571744075
+        }
+      ]
+    },
+    {
+      "turn_id": "c4e6a16b",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, esteemed judges, and honorable opponents,\n\nWhile I appreciate the concerns raised by my opponent regarding Kylie Jenner's decision to stop sharing pictures of her daughter Stormi's face, I stand firmly in opposition to the claim that this choice is a necessary statement against online harassment and bullying. In fact, I argue that the narrative surrounding this decision is not as straightforward or as noble as it may seem.\n\nFirst, let us examine the underlying motivations behind Kylie Jenner's choice. The assertion that she made this decision purely out of a protective instinct for her child is based on an insider's account reported by People, which indicates that Kylie felt overwhelmed by the \"nasty\" comments she was seeing. However, we must question the reliability and intentions behind this insider's claims. While the source has a reliability rating of 0.80, it is important to recognize that celebrity narratives are often curated to generate sympathy or support. The emotional portrayal of Kylie's decision may serve to bolster her public image as a caring mother, but it doesn't necessarily reflect a genuine effort to combat online toxicity.\n\nMoreover, we must confront the reality that Kylie's decision could inadvertently reinforce the very culture of scrutiny and judgment she claims to oppose. By withdrawing her daughter's image from the public eye, Kylie is not dismantling the toxic environment; she is simply opting out of it. This choice may even further sensationalize Stormi's existence, making her a more tantalizing subject for speculation and gossip. The more we elevate the narrative of protecting a celebrity child, the more we risk entrenching that child in the public's imagination as a figure of intrigue, which can lead to increased scrutiny rather than less.\n\nAdditionally, while my opponent argues that this decision highlights the responsibility that comes with fame, it is essential to recognize that celebrity culture is inherently intertwined with scrutiny. Public figures, including Kylie Jenner, benefit immensely from their fame and the attention it brings. In choosing to withdraw from sharing certain aspects of her life, Kylie is not only protecting her child but also strategically managing her brand and public persona. This raises the question: is her decision truly about Stormi's well-being, or is it a calculated move to maintain control over her narrative and mitigate potential backlash?\n\nIn conclusion, while my opponent paints Kylie Jenner's decision as a commendable stand against online bullying, the reality is far more complex. This choice does not necessarily equate to a meaningful fight against the toxicity of social media; rather, it may serve to reinforce the very dynamics she seeks to escape. It is crucial that",
+      "round": 1,
+      "phase": "OPENING",
+      "citations": [
+        {
+          "text": "According to People, the insider added that people were making \"nasty\" comments and that she just decided to take down any pics of Stormi's face ...Read more",
+          "url": "https://www.romper.com/p/this-could-be-why-kylie-jenner-deleted-all-her-photos-of-stormi-sadly-it-makes-complete-sense-9377445",
+          "score": 0.8034280345361147
+        }
+      ]
+    },
+    {
+      "turn_id": "f72616e3",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue with circularity, as both speakers have not presented substantial evidence to support their claims or counterclaims. NEXT speaker should ensure to provide concrete examples or data to back up their arguments.",
+      "round": 2,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "ad0751be",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "Ladies and gentlemen, esteemed judges, and honorable opponents,\n\nWhile I appreciate the effort my opponent has put into their argument, it's crucial to dismantle their points systematically to reveal the core of Kylie Jenner's decision and the sincerity behind it. \n\nFirst, my opponent attempts to undermine the validity of the insider's account from People, which has a reliability rating of 0.80. They claim that this source is merely part of a curated narrative designed to bolster Kylie's public image as a caring mother. However, let’s not forget that the reality of celebrity life often involves a genuine struggle with negative public perception. The insider's comments reflect a real sentiment that Kylie's decision is rooted in her protective instinct as a mother. To dismiss this source outright is to ignore the very real emotional impact that online harassment can have, not just on a child but on a parent as well.\n\nNext, my opponent asserts that by withdrawing Stormi's images, Kylie is not dismantling the toxic environment but merely opting out of it. This argument misses the point entirely. By refusing to expose her daughter to the \"nasty\" comments and scrutiny, Kylie is indeed taking a stand against the culture of harassment. It’s not about dismantling the entire system overnight; it's about making a conscientious choice for her child's well-being and mental health in an environment that is anything but safe. A proactive response is often the first step toward broader change.\n\nFurthermore, the claim that Kylie's decision sensationalizes Stormi's existence is a flawed assumption. While my opponent suggests that withholding images will create more speculation and gossip, this misunderstands the dynamics of celebrity culture. By stepping back, Kylie is sending a message that her child's privacy matters more than the public's insatiable curiosity. This act of prioritizing her child's safety can inspire other parents in similar positions to reflect on their choices regarding their children's exposure to social media. It is not merely a retreat; it is a powerful statement about boundaries and respect.\n\nNow, let’s address the assertion that Kylie's decision is a strategic maneuver to maintain control over her brand. This is a reductionist view that overlooks the complexity of parental instincts in the face of online harassment. Yes, Kylie benefits from her fame, but that fame also comes with a unique set of challenges and responsibilities. Her choice to limit the public's access to her daughter's image is not just about brand management; it’s about safeguarding her child from the harsh realities of social media scrutiny.\n\nIn conclusion, while my opponent paints Kylie Jenner's decision as a self-serving",
+      "round": 2,
+      "phase": "REBUTTAL",
+      "citations": [
+        {
+          "text": "According to People, the insider added that people were making \"nasty\" comments and that she just decided to take down any pics of Stormi's face ...Read more",
+          "url": "https://www.romper.com/p/this-could-be-why-kylie-jenner-deleted-all-her-photos-of-stormi-sadly-it-makes-complete-sense-9377445",
+          "score": 0.8034280345361147
+        }
+      ]
+    },
+    {
+      "turn_id": "1bef26bb",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue with circularity, as Alice does not address evidence provided by her opponent and focuses on dismantling points without presenting concrete examples or data to support her own claims. NEXT speaker should ensure to provide substantial evidence to support their arguments and directly",
+      "round": 2,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "701ce686",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, esteemed judges, and fellow debaters,\n\nLet’s cut through the emotional rhetoric and get to the crux of my opponent's argument, which is riddled with assumptions and a lack of solid evidence.\n\nFirst, my opponent leans heavily on the insider account from People, asserting its reliability with a rating of 0.80. However, let’s not forget that a reliability score of 0.80 still leaves room for doubt. This is not a bulletproof source. It’s important to recognize that tabloids often curate narratives that align with popular sentiments, especially when it comes to high-profile figures like Kylie Jenner. The insider's comments could easily be influenced by the desire for clicks and views rather than an objective portrayal of Kylie's emotional struggles. Until we have direct quotes from Kylie or a more reliable source, this argument remains speculative at best.\n\nNext, my opponent claims that Kylie’s withdrawal from sharing Stormi's images is a stand against the toxic environment of social media. This is a weak justification. By opting out, Kylie is not engaging with or addressing the problem; she’s simply avoiding it. What does it say when a parent chooses to shield their child from the public eye instead of advocating for systemic change? It suggests a retreat rather than a proactive stance. If Kylie truly wanted to combat online harassment, she could use her platform to speak out, raise awareness, and initiate discussions around the issues of online bullying. Instead, she opts for silence and withdrawal, which does nothing to change the toxic culture that surrounds prominent figures.\n\nNow, let’s address the idea that withholding images of Stormi is not sensationalizing her existence. My opponent claims it sends a message about privacy and boundaries. However, by consistently sharing her child’s images in the past and then suddenly pulling back, Kylie creates an even bigger spectacle. This action is not a mere step back; it generates speculation and discussion that ultimately keeps Stormi in the public eye—just in a different context. Instead of fostering respect for her child’s privacy, Kylie’s decision only magnifies the curiosity and obsession surrounding her family. It fuels the flames of gossip rather than dousing them.\n\nOn the point of brand control, my opponent argues that Kylie's decision is about safeguarding her child rather than mere brand management. But let’s be real here: Kylie's brand is inextricably linked to her image and how she portrays her family. By limiting access to Stormi's images, she is undoubtedly maintaining a level of intrigue that keeps her relevant in the",
+      "round": 2,
+      "phase": "REBUTTAL",
+      "citations": [
+        {
+          "text": "According to People, the insider added that people were making \"nasty\" comments and that she just decided to take down any pics of Stormi's face ...Read more",
+          "url": "https://www.romper.com/p/this-could-be-why-kylie-jenner-deleted-all-her-photos-of-stormi-sadly-it-makes-complete-sense-9377445",
+          "score": 0.8034280345361147
+        }
+      ]
+    },
+    {
+      "turn_id": "3fb97feb",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue with circularity, as Bob does not directly address specific evidence provided by Alice and focuses instead on dismantling her arguments without presenting concrete examples or data to support his own claims. NEXT speaker should ensure to provide substantial evidence to support their",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "696ba46b",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "If Kylie Jenner is genuinely concerned about the \"nasty\" comments regarding her daughter, why did she continue to share pictures of Stormi's face in the past despite knowing the potential for negative feedback?",
+      "round": 3,
+      "phase": "CROSS_EX_ASK",
+      "citations": [
+        {
+          "text": "According to People, the insider added that people were making \"nasty\" comments and that she just decided to take down any pics of Stormi's face ...Read more",
+          "url": "https://www.romper.com/p/this-could-be-why-kylie-jenner-deleted-all-her-photos-of-stormi-sadly-it-makes-complete-sense-9377445",
+          "score": 0.5236757689316446
+        }
+      ]
+    },
+    {
+      "turn_id": "7000314d",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue. NEXT speaker should address the specific evidence provided by Alice and clarify their stance on Kylie's actions regarding sharing pictures of Stormi.",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "11b14ab5",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "While it’s easy to assume Kylie Jenner's past sharing of Stormi's pictures indicates a lack of concern for her daughter's well-being, it’s crucial to recognize that many parents, including public figures, often grapple with the complexities of social media. Sharing moments of joy and love can sometimes outweigh the fear of negative comments. \n\nKylie may have felt that the positives—such as sharing her joy as a mother and connecting with her audience—outweighed the potential for criticism. Additionally, the nature of social media is often reactive; it’s possible that the accumulation of negative comments over time led to this decision rather than an initial lack of concern. \n\nUltimately, what this reveals is a nuanced perspective on parenting in the public eye. Rather than simply",
+      "round": 3,
+      "phase": "CROSS_EX_ANSWER",
+      "citations": []
+    },
+    {
+      "turn_id": "2699ec9d",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue. NEXT speaker should directly address the specific evidence provided by Alice regarding Kylie's actions and clarify their stance without repeating general points about social media.",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "775e3976",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "If Kylie Jenner's decision to stop sharing pictures of Stormi's face is truly about protecting her from \"nasty\" comments, why did she continue to post pictures of her before this decision, despite the potential for negative feedback?",
+      "round": 3,
+      "phase": "CROSS_EX_ASK",
+      "citations": [
+        {
+          "text": "According to People, the insider added that people were making \"nasty\" comments and that she just decided to take down any pics of Stormi's face ...Read more",
+          "url": "https://www.romper.com/p/this-could-be-why-kylie-jenner-deleted-all-her-photos-of-stormi-sadly-it-makes-complete-sense-9377445",
+          "score": 0.8034280345361147
+        }
+      ]
+    },
+    {
+      "turn_id": "9cb43a3b",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue: Bob is not directly addressing the specific evidence provided by Alice regarding Kylie's actions and is instead posing a rhetorical question that does not clarify his stance. NEXT speaker should directly respond to Alice's evidence and provide a clear position on",
+      "round": 3,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "702e54a8",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "Kylie Jenner's decision to stop sharing pictures of Stormi's face stems from a profound sense of protectiveness, as reflected in the insider's statement about the \"nasty\" comments she encountered. While it's true that Kylie shared photos of her daughter in the past, this could be attributed to her evolving understanding of the implications of public scrutiny. Initially, she may not have fully grasped the potential impact of such comments on her child's well-being. \n\nNow, faced with the reality of negative feedback, Kylie is taking a responsible step to shield Stormi from the toxicity of social media. This decision highlights a crucial point: as a parent, prioritizing a child's emotional safety is paramount. By choosing to limit exposure to harmful comments, Kylie is demonstrating",
+      "round": 3,
+      "phase": "CROSS_EX_ANSWER",
+      "citations": []
+    },
+    {
+      "turn_id": "c8e4c7f5",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue: Bob is not engaging with Alice's specific evidence regarding Kylie's actions. NEXT speaker should directly address Alice's points about Kylie's protectiveness and the insider's statement.",
+      "round": 4,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "fa3a65e7",
+      "agent_id": "Alice",
+      "agent_name": "Alice",
+      "stance": "PRO",
+      "text": "In closing, I want to emphasize the core of our debate: Kylie Jenner's decision to stop sharing pictures of her daughter Stormi's face is a significant and heartfelt response to the negative comments she has encountered. As I highlighted earlier, an insider reported to People that Kylie's choice stems from a protective instinct, describing the comments as \"nasty\" and indicating that her maternal instincts took precedence over her previous inclination to share.\n\nMy opponent's argument suggests that Kylie's past sharing of Stormi's images indicates a lack of concern for her daughter's well-being. However, this perspective overlooks the evolving nature of Kylie's feelings as a mother and the impact of public scrutiny on her decisions. The very fact that Kylie has now chosen to prioritize her child's emotional safety speaks volumes about her growth as a parent. It is not uncommon for parents, especially those in the public eye, to navigate the complexities of sharing personal moments while also facing backlash. Kylie's past actions do not negate her current decision; rather, they reflect a journey of understanding the potential harm that comes with public exposure.\n\nFurthermore, the insider's statement reinforces that Kylie's decision is rooted in love and protectiveness. By choosing to step back from sharing Stormi's face, she is making a conscious choice to shield her child from hurtful comments, which is ultimately a commendable act of motherhood. This decision highlights Kylie's deep care for her child's emotional state, proving that she is indeed a protective mother.\n\nIn conclusion, I firmly believe that the evidence presented clearly supports the claim that Kylie Jenner's choice is a true reflection of her protective nature as a mother. The emotional weight behind her decision cannot be understated, and it demonstrates a conscious shift towards prioritizing her child's well-being above public perception. Therefore, I confidently assert that I have won this debate, reinforcing the importance of parental protectiveness over the fleeting joy of social media sharing. Thank you.",
+      "round": 4,
+      "phase": "CLOSING",
+      "citations": [
+        {
+          "text": "According to People, the insider added that people were making \"nasty\" comments and that she just decided to take down any pics of Stormi's face ...Read more",
+          "url": "https://www.romper.com/p/this-could-be-why-kylie-jenner-deleted-all-her-photos-of-stormi-sadly-it-makes-complete-sense-9377445",
+          "score": 0.8034280345361147
+        }
+      ]
+    },
+    {
+      "turn_id": "8376c15b",
+      "agent_id": "Moderator",
+      "agent_name": "Moderator",
+      "stance": "NEUTRAL",
+      "text": "[INSTRUCTION]: There is an issue. NEXT speaker should directly address Alice's specific evidence regarding Kylie's protectiveness and the insider's statement instead of repeating points.",
+      "round": 4,
+      "phase": "MODERATION",
+      "citations": []
+    },
+    {
+      "turn_id": "2206ebed",
+      "agent_id": "Bob",
+      "agent_name": "Bob",
+      "stance": "CON",
+      "text": "Ladies and gentlemen, as we conclude this debate, it is crucial to reiterate the key points that affirm the stance I have taken. My opponent has suggested that Kylie Jenner's decision to stop sharing pictures of Stormi's face is a strong act of protectiveness spurred by the negative comments she's encountered. However, this perspective fails to recognize the fundamental inconsistency in her actions.\n\nFirstly, if Kylie was genuinely motivated by protectiveness, one must question why she continued to post pictures of Stormi's face prior to this decision. The notion that she was unaware of the potential for backlash is implausible. Social media is rife with criticism, and as a public figure, Kylie is certainly not oblivious to the potential for negative feedback. This inconsistency weakens the argument that her current decision is solely driven by a newfound sense of protectiveness.\n\nMoreover, the insider's claim about the \"nasty\" comments, while it may be reported by a reliable source, does not sufficiently support the conclusion that this was the only reason for her decision. The decision to restrict exposure is not necessarily an act of protectiveness but could reflect a myriad of motivations, including a desire for privacy or even strategic management of her public image. It is essential to understand that while Kylie's actions may appear noble on the surface, the underlying motivations remain ambiguous at best.\n\nIn summary, my opponent has failed to convincingly argue that Kylie's decision is purely about protectiveness. The inconsistencies in her past behavior and the lack of a clear, altruistic motive make it evident that the claim is unfounded. Thus, I stand firm in asserting that my position is the correct one. Thank you.",
+      "round": 4,
+      "phase": "CLOSING",
+      "citations": [
+        {
+          "text": "According to People, the insider added that people were making \"nasty\" comments and that she just decided to take down any pics of Stormi's face ...Read more",
+          "url": "https://www.romper.com/p/this-could-be-why-kylie-jenner-deleted-all-her-photos-of-stormi-sadly-it-makes-complete-sense-9377445",
+          "score": 0.7615977571744075
+        }
+      ]
+    }
+  ]
+}

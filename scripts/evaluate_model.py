@@ -90,7 +90,7 @@ def evaluate():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"🧪 Evaluating on {device}...")
 
-    TEST_DIR = os.path.join(project_root, "data", "processed", "test_set")
+    TEST_DIR = os.path.join(project_root, "data", "processed", "test_openai_set")
     graphs, y_true = load_test_data(TEST_DIR)
 
     if not graphs:

@@ -25,12 +25,11 @@ except ImportError:
 import glob
 import json
 import torch
+from tqdm import tqdm  # <--- NEW IMPORT FOR PROGRESS BAR
 from torch_geometric.loader import DataLoader
 from fire_debate.schemas.debate import DebateLog, DebateTurn
 from fire_debate.insight.graph_builder import GraphBuilder
 from fire_debate.insight.hgt_judge import HGTModel
-
-# ... (Rest of the file remains exactly the same) ...
 
 def load_dataset(data_dir):
     """
@@ -54,7 +53,8 @@ def load_dataset(data_dir):
     graphs = []
     print("🕸️  Building Graphs...")
     
-    for i, fpath in enumerate(files):
+    # Using tqdm here too so you can see loading progress
+    for i, fpath in enumerate(tqdm(files, desc="Loading Data")):
         try:
             with open(fpath, 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -123,7 +123,6 @@ def train():
     metadata = graphs[0].metadata()
     
     # --- CHANGED: Dynamic Input Size Detection ---
-    # Automatically detects the embedding size (771, 384, etc.)
     sample_node_type = list(graphs[0].x_dict.keys())[0]
     input_dim = graphs[0].x_dict[sample_node_type].shape[1]
     
@@ -140,7 +139,7 @@ def train():
         metadata=metadata
     ).to(device)
     
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0005, weight_decay=1e-4)
     criterion = torch.nn.BCEWithLogitsLoss()
     
     print("\n🚀 STARTING TRAINING LOOP...")
@@ -154,7 +153,10 @@ def train():
         correct = 0
         total_samples = 0
         
-        for batch in train_loader:
+        # --- CHANGED: Added tqdm progress bar ---
+        loop = tqdm(train_loader, desc=f"Epoch {epoch+1}/{epochs}", leave=True)
+        
+        for batch in loop:
             batch = batch.to(device)
             optimizer.zero_grad()
             
@@ -172,8 +174,11 @@ def train():
             
             # Accuracy Metric
             preds = (torch.sigmoid(out.view(-1)) > 0.5).float()
-            correct += (preds == batch.y).sum().item()
-            total_samples += batch.y.size(0)
+            current_correct = (preds == batch.y).sum().item()
+            current_total = batch.y.size(0)
+            
+            correct += current_correct
+            total_samples += current_total
 
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -182,18 +187,17 @@ def train():
             total_loss += loss.item()
             steps += 1
             
-        avg_loss = total_loss / steps if steps > 0 else 0
-        accuracy = correct / total_samples if total_samples > 0 else 0
-        
-        if (epoch+1) % 5 == 0:
-            print(f"Epoch {epoch+1:02d} | Loss: {avg_loss:.4f} | Acc: {accuracy:.2%}")
+            # Update Progress Bar with current stats
+            avg_loss = total_loss / steps
+            acc = correct / total_samples
+            loop.set_postfix(loss=f"{avg_loss:.4f}", acc=f"{acc:.2%}")
 
     # Save Model
     out_path = os.path.join(project_root, "data", "processed", "hgt_judge.pth")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     
     torch.save(model.state_dict(), out_path)
-    print(f"💾 Model saved to: {out_path}")
+    print(f"\n💾 Model saved to: {out_path}")
 
 if __name__ == "__main__":
     train()

@@ -57,11 +57,16 @@ def load_test_data(data_dir):
                 else:
                     turns.append(t)
 
+            # Handle Ground Truth key mismatch
+            gt_value = data.get('ground_truth')
+            if gt_value is None:
+                gt_value = data.get('label', False)
+
             log = DebateLog(
-                debate_id=data['debate_id'],
-                claim_id=str(data['claim_id']),
-                claim_text=data['claim_text'],
-                ground_truth=data['ground_truth'],
+                debate_id=str(data.get('debate_id', data.get('id', '0'))),
+                claim_id=str(data.get('claim_id', 'claim_0')),
+                claim_text=data.get('claim_text', data.get('claim', '')),
+                ground_truth=gt_value,
                 turns=turns
             )
 
@@ -77,7 +82,8 @@ def load_test_data(data_dir):
             y_true.append(1 if log.ground_truth else 0)
 
         except Exception as e:
-            print(f"⚠️ Skipping broken file {os.path.basename(fpath)}: {e}")
+            # print(f"⚠️ Skipping broken file {os.path.basename(fpath)}: {e}")
+            continue
 
     print(f"✅ Successfully loaded {len(graphs)} valid graphs.")
     return graphs, y_true
@@ -91,6 +97,12 @@ def evaluate():
     print(f"🧪 Evaluating on {device}...")
 
     TEST_DIR = os.path.join(project_root, "data", "processed", "test_openai_set")
+    
+    if not os.path.exists(TEST_DIR):
+        print(f"❌ Error: Test directory not found at {TEST_DIR}")
+        print("   Run: python scripts/generate_openai_data.py --count 100 --out_dir data/processed/test_openai_set")
+        return
+
     graphs, y_true = load_test_data(TEST_DIR)
 
     if not graphs:
@@ -105,13 +117,13 @@ def evaluate():
     # --- Metadata from graph schema ---
     metadata = graphs[0].metadata()
 
-    # --- Load Model ---
+    # --- Load Model (UPDATED TO MATCH PRO-MODE TRAINING) ---
     model = HGTModel(
         in_channels=in_channels,
-        hidden_channels=64,
+        hidden_channels=128,  # MATCH TRAINING: 64 -> 128
         out_channels=1,
-        num_heads=2,
-        num_layers=2,
+        num_heads=8,          # MATCH TRAINING: 2 -> 8
+        num_layers=3,         # MATCH TRAINING: 2 -> 3
         metadata=metadata
     ).to(device)
 
@@ -136,6 +148,7 @@ def evaluate():
     with torch.no_grad():
         for graph in graphs:
             graph = graph.to(device)
+            # Batch dict needs to be None for single graph inference
             logits = model(graph.x_dict, graph.edge_index_dict, batch_dict=None)
             prob = torch.sigmoid(logits).item()
             probs.append(prob)

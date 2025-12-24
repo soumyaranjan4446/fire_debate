@@ -73,13 +73,13 @@ class DebaterAgent:
         if phase != "CROSS_EX_ANSWER":
             query = self._generate_search_query(claim, phase)
             # --- DEBUG PRINT ---
-            # print(f"\n[DEBUG] {self.name} Search Query: '{query}'")
+            print(f"\n[DEBUG] {self.name} Search Query: '{query}'")
             # -------------------
             try:
                 raw_evidence = self.retriever.retrieve(query) 
                 trusted_evidence = self.librarian.filter_evidence(raw_evidence, claim_context=claim)
                 # --- DEBUG PRINT ---
-                # print(f"[DEBUG] Evidence Found: {len(trusted_evidence)} docs")
+                print(f"[DEBUG] Evidence Found: {len(trusted_evidence)} docs")
                 # -------------------
             except Exception as e:
                 # Fallback if search fails (e.g. rate limits)

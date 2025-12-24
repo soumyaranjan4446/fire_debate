@@ -7,12 +7,16 @@ from tqdm import tqdm
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 # --- 1. ROBUST PATH SETUP ---
+# Determine the absolute path to the project root
+# Logic: script is in /.../fire_debate/scripts/run_baseline_robust.py
 script_path = os.path.abspath(__file__)
 scripts_dir = os.path.dirname(script_path)
-package_dir = os.path.dirname(scripts_dir)  # .../fire_debate
-project_root = os.path.dirname(package_dir) # .../fire_debate3
+project_root = os.path.dirname(scripts_dir)  # Go up one level from 'scripts'
+package_dir = os.path.join(project_root, "fire_debate") # The inner package folder
 
-print(f"🔧 Project Root: {project_root}")
+print(f"🔧 Project Root set to: {project_root}")
+
+# Add to path if not already there
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
@@ -79,8 +83,9 @@ def run_baseline():
 
     # 3. Load Data (Robust Search)
     data_dir = os.path.join(project_root, "data", "processed", "test_openai_set")
+    
+    # Fallback search if main path is empty
     if not os.path.exists(data_dir):
-         # Try looking inside the package
          data_dir = os.path.join(package_dir, "data", "processed", "test_openai_set")
 
     files = glob.glob(os.path.join(data_dir, "*.json"))
@@ -101,12 +106,16 @@ def run_baseline():
             with open(fpath, "r", encoding="utf-8") as f:
                 data = json.load(f)
             
-            gt = normalize_ground_truth(data.get("ground_truth"))
+            # Handle missing ground_truth key safely
+            gt_val = data.get("ground_truth")
+            if gt_val is None: gt_val = data.get("label", False)
+
+            gt = normalize_ground_truth(gt_val)
             y_true.append(gt)
 
             prompt = (
                 "You are an expert fact-checking AI.\n"
-                f"Claim: \"{data['claim_text']}\"\n"
+                f"Claim: \"{data.get('claim_text', data.get('claim'))}\"\n"
                 "Is this claim True or False?\n"
                 "Reply with exactly one word: TRUE or FALSE."
             )

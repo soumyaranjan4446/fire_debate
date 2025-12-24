@@ -19,12 +19,16 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-# --- Path Setup ---
 current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# FIX: Go up only ONE level (scripts -> project_root)
 project_root = os.path.abspath(os.path.join(current_dir, '..'))
 
+# Debug print to confirm (Optional)
+print(f"🔧 Debug: Project Root set to: {project_root}")
+
 if project_root not in sys.path:
-    sys.path.append(project_root)
+    sys.path.insert(0, project_root)
 
 # --- Imports ---
 from fire_debate.agents.local_client import LocalHFClient

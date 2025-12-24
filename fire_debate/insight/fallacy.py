@@ -1,5 +1,6 @@
 import torch
 from sentence_transformers import CrossEncoder, SentenceTransformer, util
+import numpy as np
 
 class FallacyDetector:
     def __init__(self, device="cpu", shared_encoder=None):
@@ -8,7 +9,7 @@ class FallacyDetector:
         # 1. Logic Checker (NLI Cross-Encoder)
         # We stick to DistilRoBERTa because it's faster and more stable for simple logic checks
         self.logic_model_name = "cross-encoder/nli-distilroberta-base"
-        print(f"🕵️ Loading Logic Validator ({self.logic_model_name})...")
+        print(f"🕵️  Loading Logic Validator ({self.logic_model_name})...")
         try:
             self.logic_model = CrossEncoder(self.logic_model_name, device=self.device)
         except Exception as e:
@@ -46,13 +47,18 @@ class FallacyDetector:
         # DistilRoBERTa NLI mapping: 0:Contradiction, 1:Entailment, 2:Neutral
         if self.logic_model:
             try:
+                # Predict returns numpy array of logits
                 pred = self.logic_model.predict([(text, "This argument contains a logical fallacy.")])
-                probs = torch.nn.functional.softmax(torch.tensor(pred), dim=0)
+                
+                # Convert to tensor for softmax
+                logits = torch.tensor(pred, dtype=torch.float32)
+                probs = torch.nn.functional.softmax(logits, dim=0)
                 
                 # Index 1 is Entailment. If high, it IS a fallacy.
                 fallacy_prob = probs[1].item() 
                 results["logical reasoning"] = 1.0 - fallacy_prob
-            except:
+            except Exception as e:
+                # print(f"Logic check warning: {e}")
                 results["logical reasoning"] = 0.5
         else:
              results["logical reasoning"] = 0.5
@@ -61,15 +67,16 @@ class FallacyDetector:
         if context and self.rel_model:
             try:
                 # Encode both sentences
-                emb_text = self.rel_model.encode(text, convert_to_tensor=True)
-                emb_context = self.rel_model.encode(context, convert_to_tensor=True)
+                emb_text = self.rel_model.encode(text, convert_to_tensor=True, show_progress_bar=False)
+                emb_context = self.rel_model.encode(context, convert_to_tensor=True, show_progress_bar=False)
                 
                 # Calculate Cosine Similarity (0.0 to 1.0)
                 similarity = util.cos_sim(emb_text, emb_context).item()
                 
                 # Normalize: Cosine sim can be negative (-1 to 1). We clamp to 0-1.
                 results["relevance"] = max(0.0, similarity)
-            except:
+            except Exception as e:
+                # print(f"Relevance check warning: {e}")
                 results["relevance"] = 0.5
         else:
             results["relevance"] = 1.0 

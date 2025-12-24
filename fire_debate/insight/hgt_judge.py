@@ -8,7 +8,7 @@ from fire_debate.schemas.debate import DebateLog
 class HGTModel(nn.Module):
     def __init__(self, hidden_channels=64, out_channels=1, num_heads=2, num_layers=2, metadata=None, in_channels=None):
         """
-        TED-Style Interactive Attention GNN.
+        TED-Style Interactive Attention GNN (Argument-Only Version).
         Args:
             in_channels: Input feature dimension (Fixed to 771 by GraphBuilder).
         """
@@ -20,7 +20,7 @@ class HGTModel(nn.Module):
         self.lin_dict = torch.nn.ModuleDict()
         if metadata:
             # Create a projection layer for EVERY node type defined in metadata
-            # (argument, evidence, etc.)
+            # In this version, it will just be 'argument'
             for node_type in metadata[0]:
                 self.lin_dict[node_type] = Linear(input_dim, hidden_channels)
 
@@ -42,7 +42,7 @@ class HGTModel(nn.Module):
         self.classifier = nn.Sequential(
             nn.Linear(hidden_channels * 2, 64),
             nn.ReLU(),
-            nn.Dropout(0.5), 
+            nn.Dropout(0.2), 
             nn.Linear(64, 1) 
         )
 
@@ -82,7 +82,6 @@ class HGTModel(nn.Module):
         # --- B. GRAPH REASONING (HGT) ---
         # 1. Linear Projection (Input -> Hidden)
         # We iterate over whatever keys exist in x_dict.
-        # If 'evidence' is missing in this specific batch, we just skip it safely.
         for node_type, x in x_dict.items():
             if node_type in self.lin_dict:
                 x_dict[node_type] = self.lin_dict[node_type](x).relu()
@@ -93,7 +92,6 @@ class HGTModel(nn.Module):
 
         # --- C. POOLING (Get 'g') ---
         # We pool the ARGUMENT nodes to get the debate representation.
-        # Evidence nodes have already passed their info to arguments via convolution.
         graph_embedding = global_mean_pool(x_dict['argument'], batch_indices)
 
         # --- D. INTERACTIVE ATTENTION (TED Method) ---
@@ -115,24 +113,23 @@ class HGTModel(nn.Module):
 
 class HGTJudge:
     def __init__(self, model_path=None, device="cuda"):
-        print("⚖️  Initializing HGT GNN Judge (Evidence-Aware Mode)...")
+        print("⚖️  Initializing HGT GNN Judge (Argument-Only Mode)...")
         self.device = "cuda" if (device == "cuda" and torch.cuda.is_available()) else "cpu"
         
         self.builder = GraphBuilder(device=self.device)
         
         # --- METADATA DEFINITION ---
-        # Defines the Schema of our Heterogeneous Graph
+        # Defines the Schema of our Argument-Only Graph
+        # This matches the reverted GraphBuilder structure
         self.metadata = (
-            ['argument', 'evidence'], # Node Types
+            ['argument'], # Node Types
             [
-                ('argument', 'follows', 'argument'),
-                ('argument', 'supports', 'evidence'),
-                ('argument', 'contradicts', 'evidence')
+                ('argument', 'follows', 'argument')
             ]
         )
         
         # Initialize Model
-        # We force in_channels=771 because GraphBuilder guarantees padding
+        # We force in_channels=771 because GraphBuilder guarantees padding/features
         self.model = HGTModel(
             hidden_channels=64, 
             out_channels=1, 
@@ -148,7 +145,7 @@ class HGTJudge:
                 self.model.load_state_dict(torch.load(model_path, map_location=self.device))
                 print(f"   ✅ Loaded trained weights from {model_path}")
             except Exception as e:
-                print(f"   ⚠️ Architecture mismatch (Expected for Upgrade): {e}")
+                print(f"   ⚠️ Architecture mismatch: {e}")
                 print("   ⚠️ Running in UNTRAINED mode. Please run train_judge.py")
         else:
             print("   ⚠️ Running in UNTRAINED mode.")
@@ -156,7 +153,7 @@ class HGTJudge:
         self.model.eval()
 
     def judge(self, log: DebateLog) -> dict:
-        # 1. Build Heterogeneous Graph
+        # 1. Build Graph (Now returns only Argument nodes)
         data = self.builder.build_graph(log)
         data = data.to(self.device)
         
@@ -170,11 +167,10 @@ class HGTJudge:
         
         # Count stats for reason string
         n_args = data['argument'].num_nodes
-        n_ev = data['evidence'].num_nodes if 'evidence' in data.node_types else 0
         
         return {
             "verdict": verdict,
             "confidence": prob if verdict else (1.0 - prob),
             "score": prob,
-            "reason": f"Analyzed {n_args} arguments & {n_ev} evidence nodes."
+            "reason": f"Analyzed {n_args} arguments using Logic Flow GNN."
         }

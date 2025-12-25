@@ -1,7 +1,7 @@
-# FIRE-Debate: Automated Fact-Checking Debate System
+# FIRE-DEBATE: Fact-Checking, Investigation, Retrieval, and Evaluation - Debate System
 
 ## Overview
-FIRE-Debate is a modular, research-grade and production-ready system for automated fact-checking debates between AI agents. It combines retrieval-augmented generation, agentic debate, neuro-symbolic reasoning, and graph neural networks to evaluate claims, generate arguments, and judge factuality. The system is highly extensible and supports both local and cloud LLMs, real-time web search, and advanced evidence evaluation.
+FIRE-DEBATE (Fact-Checking, Investigation, Retrieval, and Evaluation - Debate System) is a modular, research-grade and production-ready neuro-symbolic system for automated fact-checking debates between AI agents. It combines retrieval-augmented generation, agentic debate, neuro-symbolic reasoning, and graph neural networks to evaluate claims, generate arguments, and judge factuality. The system is highly extensible and supports both local and cloud LLMs, real-time web search, and advanced evidence evaluation.
 
 ---
 

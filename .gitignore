@@ -2,7 +2,8 @@ __pycache__/
 *.pyc
 .env
 .venv/
-env/
+.env
+configs/base.yaml
 
 # *.json 
 *.txt
